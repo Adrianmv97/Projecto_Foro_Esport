@@ -8,19 +8,21 @@ require_once 'model.php';
     $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
     $articulos = $conexion->verTemas();
 
+    $tema = 1;
     foreach ($articulos as $valor) {
         echo "<div class='card text-center' style='width: 25rem;'>";
         
             echo "<div class='card-header'>";
-            echo "Ficha" .$valor['id'];
+            echo "Tema " .$tema;
             echo "</div>";
 
             echo "<div class='card-body'>";
             echo "<h5 class='card-title'>". $valor['TituloTema']."</h5>";
-            echo "<a href='post.php' class='btn btn-primary'>Ir al post</a>";
+            echo "<a href='post.php' class='btn btn-primary'>Ir al Tema</a>";
             echo "</div>";
 
         echo "</div>";
+        $tema ++;
     }
     $conexion->desconectar();
     ?>
