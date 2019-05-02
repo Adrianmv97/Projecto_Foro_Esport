@@ -20,7 +20,7 @@ class model {
         }
         return $resultado;
     }
-    
+
     public function verSubForos($idTema) {
         $resultado = array();
         $consulta = $this->conexion->stmt_init();
@@ -28,26 +28,42 @@ class model {
         $consulta->execute();
         $consulta->bind_result($idSubforo, $tituloSubForo, $idTemaRelacion);
         while ($fila = $consulta->fetch()) {
-            $arrayFila = array("idSubforo" => $idSubforo, "TituloSubForo" => $tituloSubForo , "idTemaRelacion" => $idTemaRelacion);
+            $arrayFila = array("idSubforo" => $idSubforo, "TituloSubForo" => $tituloSubForo, "idTemaRelacion" => $idTemaRelacion);
             array_push($resultado, $arrayFila);
         }
         return $resultado;
     }
-    
-        public function verPost($idSubforo) {
+
+    public function verPost($idSubforo) {
         $resultado = array();
         $consulta = $this->conexion->stmt_init();
         $consulta->prepare("SELECT * FROM post WHERE idSubforoRelacion = " . $idSubforo);
         $consulta->execute();
         $consulta->bind_result($idPost, $tituloPost, $idSubforoRelacion, $idUsuarioRelacion);
         while ($fila = $consulta->fetch()) {
-            $arrayFila = array("idPost" => $idPost, "TituloPost" => $tituloPost , "idSubforoRelacion" => $idSubforoRelacion
-                    , "idUsuarioRelacion" => $idUsuarioRelacion);
+            $arrayFila = array("idPost" => $idPost, "TituloPost" => $tituloPost, "idSubforoRelacion" => $idSubforoRelacion
+                , "idUsuarioRelacion" => $idUsuarioRelacion);
             array_push($resultado, $arrayFila);
         }
         return $resultado;
     }
+
+    public function verComentarios($idPost) {
+        $resultado = array();
+        $consulta = $this->conexion->stmt_init();
+        $consulta->prepare("SELECT * FROM comentario WHERE idPostRelacion = " . $idPost);
+        $consulta->execute();
+        $consulta->bind_result($idComentario, $comentario, $idUsuarioRelacion, $idPostRelacion);
+        while ($fila = $consulta->fetch()) {
+            $arrayFila = array("idComentario" => $idComentario, "Comentario" => $comentario, "idUsuarioRelacion" => $idUsuarioRelacion
+                , "idPostRelacion" => $idPostRelacion);
+            array_push($resultado, $arrayFila);
+        }
+        return $resultado;
+    }
+
     public function desconectar() {
         $this->conexion->close();
     }
+
 }
