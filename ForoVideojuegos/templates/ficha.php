@@ -8,12 +8,12 @@ require_once 'model.php';
     $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
     $articulos = $conexion->verTemas();
 
-    $tema = 1;
+    $indiceTema = 1;
     foreach ($articulos as $valor) {
         echo "<div class='card text-center' style='width: 25rem;'>";
         
             echo "<div class='card-header'>";
-            echo "Tema " .$tema;
+            echo "Tema " .$indiceTema;
             echo "</div>";
 
             echo "<div class='card-body'>";
@@ -22,7 +22,7 @@ require_once 'model.php';
             echo "</div>";
 
         echo "</div>";
-        $tema ++;
+        $indiceTema ++;
     }
     $conexion->desconectar();
     ?>

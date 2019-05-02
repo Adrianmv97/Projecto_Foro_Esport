@@ -20,7 +20,20 @@ class model {
         }
         return $resultado;
     }
-
+    
+    public function verSubForos($tema) {
+        $resultado = array();
+        $consulta = $this->conexion->stmt_init();
+        $consulta->prepare("SELECT * FROM subforo WHERE idTemaRelacion = " . $tema);
+        $consulta->execute();
+        $consulta->bind_result($idSubforo, $tituloSubForo, $idTemaRelacion);
+        while ($fila = $consulta->fetch()) {
+            $arrayFila = array("idSubforo" => $idSubforo, "TituloSubForo" => $tituloSubForo , "idTemaRelacion" => $idTemaRelacion);
+            array_push($resultado, $arrayFila);
+        }
+        return $resultado;
+    }
+    
     public function desconectar() {
         $this->conexion->close();
     }
