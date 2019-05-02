@@ -20,12 +20,12 @@ and open the template in the editor.
 
             $newUser = strtolower($newUser);
 
-            $conn = mysqli_connect('localhost', 'root', '', 'testforo', '3306');
+            $conn = mysqli_connect('localhost', 'root', '', 'foroesport', '3306');
             if (!$conn) {
                 die('Could not connect to MySQL: ' . mysqli_connect_error());
             }
-            $accion = "INSERT INTO `usuarios` (`USER`, `PASSWORD`)"
-                    . " VALUES ('$newUser', '$newPassword')";
+            $accion = "INSERT INTO `usuarios` (`USER`, `PASSWORD`, `LEVELUSER`)"
+                    . " VALUES ('$newUser', '$newPassword' , 1)";
 
             $accion2 = "SELECT user FROM usuarios WHERE user = '$newUser'";
 

@@ -11,20 +11,20 @@
 
         $usuario = strtolower($usuario);
 
-        $conn = mysqli_connect('localhost', 'root', '', 'testforo', '3306');
+        $conn = mysqli_connect('localhost', 'root', '', 'foroesport', '3306');
         if (!$conn) {
             die('Could not connect to MySQL: ' . mysqli_connect_error());
         }
 
-        $accion = "SELECT id,user,password FROM usuarios WHERE user = '$usuario'";
+        $accion = "SELECT idUsuario,user,password FROM usuarios WHERE user = '$usuario'";
         $result = $conn->query($accion);
         $count = mysqli_num_rows($result);
         if ($count == 1) {
             while ($row = $result->fetch_array()) {
                 if ($row['user'] == $usuario && $row['password'] == $contrasena) {
-                    echo ("<form name='idUsuario' action='index.php' method='POST'>");
+                    echo ("<form name='usuarioLanzado' action='index.php' method='POST'>");
                     session_start();
-                    $_SESSION['id'] = $row['id'];
+                    $_SESSION['idUsuario'] = $row['idUsuario'];
                     echo ("</form>");
                 } else if ($row['user'] == $usuario && $row['password'] != $contrasena) {
                     echo ("<div>");
@@ -54,6 +54,6 @@
         ?>
     </body>
     <script>
-        document.idUsuario.submit();
+        document.usuarioLanzado.submit();
     </script>
 </html>
