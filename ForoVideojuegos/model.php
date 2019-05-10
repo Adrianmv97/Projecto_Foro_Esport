@@ -39,10 +39,10 @@ class model {
         $consulta = $this->conexion->stmt_init();
         $consulta->prepare("SELECT * FROM post WHERE idSubforoRelacion = " . $idSubforo);
         $consulta->execute();
-        $consulta->bind_result($idPost, $tituloPost, $idSubforoRelacion, $idUsuarioRelacion);
+        $consulta->bind_result($idPost, $tituloPost, $contenidoPost, $idSubforoRelacion, $idUsuarioRelacion, $nombreUsuario, $apellidoUsuario);
         while ($fila = $consulta->fetch()) {
-            $arrayFila = array("idPost" => $idPost, "TituloPost" => $tituloPost, "idSubforoRelacion" => $idSubforoRelacion
-                , "idUsuarioRelacion" => $idUsuarioRelacion);
+            $arrayFila = array("idPost" => $idPost, "TituloPost" => $tituloPost, "ContenidoPost" => $contenidoPost, "idSubforoRelacion" => $idSubforoRelacion,
+                "idUsuarioRelacion" => $idUsuarioRelacion, "NombreUsuario" => $nombreUsuario, "ApellidoUsuario" => $apellidoUsuario);
             array_push($resultado, $arrayFila);
         }
         return $resultado;
@@ -53,13 +53,17 @@ class model {
         $consulta = $this->conexion->stmt_init();
         $consulta->prepare("SELECT * FROM comentario WHERE idPostRelacion = " . $idPost);
         $consulta->execute();
-        $consulta->bind_result($idComentario, $comentario, $idUsuarioRelacion, $idPostRelacion);
+        $consulta->bind_result($idComentario, $comentario, $idUsuarioRelacion, $idPostRelacion, $nombreUsuario, $apellidoUsuario);
         while ($fila = $consulta->fetch()) {
             $arrayFila = array("idComentario" => $idComentario, "Comentario" => $comentario, "idUsuarioRelacion" => $idUsuarioRelacion
-                , "idPostRelacion" => $idPostRelacion);
+                , "idPostRelacion" => $idPostRelacion, "NombreUsuario" => $nombreUsuario, "ApellidoUsuario" => $apellidoUsuario);
             array_push($resultado, $arrayFila);
         }
         return $resultado;
+    }
+    
+    public function escrituraComentario(){
+        
     }
 
     public function desconectar() {
