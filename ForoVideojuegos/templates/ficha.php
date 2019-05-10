@@ -1,6 +1,7 @@
 <?php
 require_once 'config.php';
 require_once 'model.php';
+session_start();
 ?>
 
 <div class="d-flex flex-wrap p-2 bd-highlight">

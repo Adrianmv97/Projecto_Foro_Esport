@@ -61,6 +61,10 @@ class model {
         }
         return $resultado;
     }
+    
+    public function escrituraComentario(){
+        
+    }
 
     public function desconectar() {
         $this->conexion->close();

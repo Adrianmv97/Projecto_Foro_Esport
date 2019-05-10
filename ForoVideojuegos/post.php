@@ -15,6 +15,7 @@
     <?php
     require_once 'config.php';
     require_once 'model.php';
+    session_start();
     ?>
     <body>
         <nav class="navbar navbar-light bg-primary">

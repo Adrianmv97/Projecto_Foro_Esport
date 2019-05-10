@@ -16,7 +16,7 @@
             die('Could not connect to MySQL: ' . mysqli_connect_error());
         }
 
-        $accion = "SELECT idUsuario,user,password FROM usuarios WHERE user = '$usuario'";
+        $accion = "SELECT idUsuario,user,password,nombre,apellidos FROM usuarios WHERE user = '$usuario'";
         $result = $conn->query($accion);
         $count = mysqli_num_rows($result);
         if ($count == 1) {
@@ -25,6 +25,8 @@
                     echo ("<form name='usuarioLanzado' action='index.php' method='POST'>");
                     session_start();
                     $_SESSION['idUsuario'] = $row['idUsuario'];
+                    $_SESSION['nombre'] = $row['nombre'];
+                    $_SESSION['apellido'] = $row['apellidos'];
                     echo ("</form>");
                 } else if ($row['user'] == $usuario && $row['password'] != $contrasena) {
                     echo ("<div>");
