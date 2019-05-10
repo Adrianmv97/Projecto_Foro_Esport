@@ -18,7 +18,7 @@ require_once 'model.php';
 
             echo "<div class='card-body'>";
             echo "<h5 class='card-title'>". $valor['TituloTema']."</h5>";
-            echo "<a href='post.php' class='btn btn-primary'>Ir al Tema</a>";
+            echo "<a href='Foro.php' class='btn btn-primary'>Ir al Tema</a>";
             echo "</div>";
 
         echo "</div>";
