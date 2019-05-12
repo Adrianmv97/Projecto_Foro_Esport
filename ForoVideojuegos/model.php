@@ -34,10 +34,11 @@ class model {
         return $resultado;
     }
 
-    public function verPost($idSubforo) {
+    
+    public function verPost($idPost) {
         $resultado = array();
         $consulta = $this->conexion->stmt_init();
-        $consulta->prepare("SELECT * FROM post WHERE idSubforoRelacion = " . $idSubforo);
+        $consulta->prepare("SELECT * FROM post WHERE idPost = " . $idPost);
         $consulta->execute();
         $consulta->bind_result($idPost, $tituloPost, $contenidoPost, $idSubforoRelacion, $idUsuarioRelacion, $nombreUsuario, $apellidoUsuario);
         while ($fila = $consulta->fetch()) {
@@ -64,6 +65,20 @@ class model {
     
     public function escrituraComentario(){
         
+    }
+    
+    public function verPosts($idSubForo) {
+        $resultado = array();
+        $consulta = $this->conexion->stmt_init();
+        $consulta->prepare("SELECT * FROM post WHERE idSubforoRelacion = " . $idSubForo);
+        $consulta->execute();
+        $consulta->bind_result($idPost, $tituloPost, $contenidoPost, $idSubforoRelacion, $idUsuarioRelacion, $nombreUsuario, $apellidoUsuario);
+        while ($fila = $consulta->fetch()) {
+            $arrayFila = array("idPost" => $idPost, "TituloPost" => $tituloPost, "ContenidoPost" => $contenidoPost, "idSubforoRelacion" => $idSubforoRelacion,
+                "idUsuarioRelacion" => $idUsuarioRelacion, "NombreUsuario" => $nombreUsuario, "ApellidoUsuario" => $apellidoUsuario);
+            array_push($resultado, $arrayFila);
+        }
+        return $resultado;
     }
 
     public function desconectar() {
