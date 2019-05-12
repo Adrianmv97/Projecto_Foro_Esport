@@ -13,6 +13,29 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </head>
     <body>
+        <nav class="navbar navbar-light bg-primary">
+            <div class="collapse navbar-collapse d-flex flex-row bd-highlight" id="navbarText" id="datos">
+                <span class="navbar-text">
+                    Datos de usuario
+                </span>
+            </div>
+            <div class="collapse navbar-collapse d-flex flex-row-reverse bd-highlight" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <div class="p-2 border bg-success">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="registro.html">Registrarse</a>
+                        </li>
+                    </div>
+                </ul>
+                <ul class="navbar-nav">
+                    <div class="p-2 border bg-success">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="iniciarSesion.html">Iniciar Sesión</a>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </nav>
         <?php
         include('./templates/nav.php');
         include('./templates/ficha.php');

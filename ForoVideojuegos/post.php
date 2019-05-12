@@ -48,7 +48,7 @@
             <?php
             //Titulo y contenido del post
             $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
-            $post = $conexion->verPost(3);
+            $post = $conexion->verPost(2);
             foreach ($post as $valor) {
                 echo "<div class='card'>";
                 echo "<div class='card-header'>";
