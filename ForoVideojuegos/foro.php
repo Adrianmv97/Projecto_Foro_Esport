@@ -38,16 +38,25 @@
 </nav>
 <?php 
     include('./templates/nav.php');
-?>
-<div class="jumbotron jumbotron-fluid mx-auto">
-    <h3>Tema</h3>
-    <div class="card">
-        <a href="subforo.php" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Subforo 1</a>
-        <a href="subforo.php" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Subforo 2</a>
-        <a href="subforo.php" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Subforo 3</a>
-    </div>
-</div>
-<?php
+
+    require_once 'config.php';
+    require_once 'model.php';
+    
+    $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+
+    $indiceTema = 2;
+    $foro = $conexion->verSubForos($indiceTema);
+    foreach ($foro as $valor) {
+        echo '<div class="jumbotron jumbotron-fluid mx-auto">';
+            echo '<h3>Natacion</h3>';
+            echo '<div class="card">';
+                echo "<a href='subforo.php' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloSubForo'] . "</a>";
+            echo '</div>';
+        echo '</div>';
+        $indiceTema ++;
+    }
+    $conexion->desconectar();
+
     include('./templates/footer.php');
 ?>
 </body>
