@@ -34,7 +34,6 @@ class model {
         return $resultado;
     }
 
-    
     public function verPost($idPost) {
         $resultado = array();
         $consulta = $this->conexion->stmt_init();
@@ -62,11 +61,11 @@ class model {
         }
         return $resultado;
     }
-    
-    public function escrituraComentario(){
+
+    public function escrituraComentario() {
         
     }
-    
+
     public function verPosts($idSubForo) {
         $resultado = array();
         $consulta = $this->conexion->stmt_init();
@@ -78,6 +77,29 @@ class model {
                 "idUsuarioRelacion" => $idUsuarioRelacion, "NombreUsuario" => $nombreUsuario, "ApellidoUsuario" => $apellidoUsuario);
             array_push($resultado, $arrayFila);
         }
+        return $resultado;
+    }
+
+    public function verTodosUsuarios() {
+        $resultado = array();
+        $consulta = $this->conexion->stmt_init();
+        $consulta->prepare("SELECT idUsuario,Correo,Nombre,Apellidos,LevelUser FROM usuarios WHERE LevelUser > 0");
+        $consulta->execute();
+        $consulta->bind_result($idUsuario, $correo, $nombre, $apellidos, $levelUser);
+        while ($fila = $consulta->fetch()) {
+            $arrayFila = array("idUsuario" => $idUsuario, "Nombre" => $nombre, "Apellidos" => $apellidos, "LevelUser" => $levelUser, "Correo" => $correo);
+            array_push($resultado, $arrayFila);
+        }
+        return $resultado;
+    }
+
+    public function verCantidadSubforosAsignadoTema($idTema) {
+        $resultado;
+        $consulta = $this->conexion->stmt_init();
+        $consulta->prepare("SELECT * FROM subforo WHERE idTemaRelacion = " . $idTema);
+        $consulta->execute();
+        $consulta->store_result();
+        $resultado = $consulta->num_rows();
         return $resultado;
     }
 
