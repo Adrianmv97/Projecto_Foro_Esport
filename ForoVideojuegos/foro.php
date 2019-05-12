@@ -46,15 +46,17 @@
 
     $indiceTema = 2;
     $foro = $conexion->verSubForos($indiceTema);
+    $tema = $conexion->verTemas();
+    echo '<div class="jumbotron jumbotron-fluid mx-auto">';
+    echo "<h3>Natación</h3>";
     foreach ($foro as $valor) {
-        echo '<div class="jumbotron jumbotron-fluid mx-auto">';
-            echo '<h3>Natacion</h3>';
-            echo '<div class="card">';
-                echo "<a href='subforo.php' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloSubForo'] . "</a>";
-            echo '</div>';
+        echo '<div class="card">';
+            echo "<a href='subforo.php' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloSubForo'] . "</a>";
         echo '</div>';
         $indiceTema ++;
     }
+    
+    echo '</div>';
     $conexion->desconectar();
 
     include('./templates/footer.php');
