@@ -23,7 +23,7 @@
         <ul class="navbar-nav">
             <div class="p-2 border bg-success">
                 <li class="nav-item active">
-                    <a class="nav-link" href="cerrarSesion.php">Cerrar Sesión</a>
+                    <a class="nav-link" href="registro.html">Registrarse</a>
                 </li>
             </div>
         </ul>
