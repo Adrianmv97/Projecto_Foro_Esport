@@ -31,7 +31,7 @@ class model {
             $arrayFila = array("idSubforo" => $idSubforo, "TituloSubForo" => $tituloSubForo, "idTemaRelacion" => $idTemaRelacion);
             array_push($resultado, $arrayFila);
         }
-        return $resultado;
+         return $resultado;
     }
 
     public function verPost($idPost) {
@@ -100,6 +100,19 @@ class model {
         $consulta->execute();
         $consulta->store_result();
         $resultado = $consulta->num_rows();
+        return $resultado;
+    }
+    
+    public function verTema($idTema){
+        $resultado = array();
+        $consulta = $this->conexion->stmt_init();
+        $consulta->prepare("SELECT * FROM Temas WHERE idTema = ".$idTema);
+        $consulta->execute();
+        $consulta->bind_result($id, $tituloTema);
+        while ($fila = $consulta->fetch()) {
+            $arrayFila = array("id" => $id, "TituloTema" => $tituloTema);
+            array_push($resultado, $arrayFila);
+        }
         return $resultado;
     }
 

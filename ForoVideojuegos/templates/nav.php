@@ -27,8 +27,18 @@
                 <li class="nav-item active p-4">
                     <a class="btn btn-lg btn-primary" href="creadores.php">Creadores</a>
                 </li>
-                </div>
-            </ul>
         </div>
+        <?php
+        if (isset($_SESSION['idUsuario'])) {
+            if ($_SESSION['idUsuario'] == 1) {
+                echo "<div class='col px-md-5'>";
+                echo "<ul class='navbar-nav mr-auto'>";
+                echo "<li class='nav-item active p-4'>";
+                echo "<a class='btn btn-lg btn-primary' href='herramientaAdministrativa.php'>Herramienta de administracion</a>";
+                echo "</li>";
+                echo "</div>";
+            }
+        }
+        ?>
     </div>
 </nav>

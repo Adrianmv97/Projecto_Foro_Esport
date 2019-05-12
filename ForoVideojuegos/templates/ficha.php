@@ -1,16 +1,15 @@
 <?php
 require_once 'config.php';
 require_once 'model.php';
-session_start();
 ?>
 
 <div class="d-flex flex-wrap p-2 bd-highlight">
     <?php
     $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
-    $articulos = $conexion->verTemas();
+    $temas = $conexion->verTemas();
 
     $indiceTema = 1;
-    foreach ($articulos as $valor) {
+    foreach ($temas as $valor) {
         echo "<div class='card text-center' style='width: 25rem;'>";
         
             echo "<div class='card-header'>";
@@ -19,7 +18,7 @@ session_start();
 
             echo "<div class='card-body'>";
             echo "<h5 class='card-title'>". $valor['TituloTema']."</h5>";
-            echo "<a href='Foro.php' class='btn btn-primary'>Ir al Tema</a>";
+            echo "<a href='Foro.php?accion=ver&idTemaUnico=". $valor['id'] ."' class='btn btn-primary'>Ver Tema</a>";
             echo "</div>";
 
         echo "</div>";
