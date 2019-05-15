@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<?php
+session_start();
+
+if (isset($_REQUEST["accion"])) {
+    $accion = $_REQUEST["accion"];
+}
+if (isset($_REQUEST["idTema"])) {
+    $idTemaUnico = $_REQUEST["idTema"];
+}
+?>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -38,17 +48,27 @@
 </nav>
 <?php 
     include('./templates/nav.php');
+
+    require_once 'config.php';
+    require_once 'model.php';
+
+    $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+    
+    $indiceSubForo = 3;
+    $subforo = $conexion->verPosts($indiceSubForo);
+
+    echo '<div class="jumbotron jumbotron-fluid mx-auto">';
+    echo "<h3>Natación</h3>";
+    foreach ($subforo as $valor) {
+        echo '<div class="card">';
+            echo "<a href='post.php' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloPost'] . "</a>";
+        echo '</div>';
+        $indiceSubForo ++;
+    }
+    
+    echo '</div>';
+    $conexion->desconectar();
 ?>
-<div class="jumbotron jumbotron-fluid mx-auto">
-    <div class="card">
-        <a href="post.php" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Post de usuario</a>
-        <a href="post.php" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Post de usuario</a>
-        <a href="post.php" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Post de usuario</a>
-        <a href="post.php" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Post de usuario</a>
-    </div>
-</div>
-<?php
-    include('./templates/footer.php');
-?>
+
 </body>
 </html>
