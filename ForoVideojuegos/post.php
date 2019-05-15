@@ -1,4 +1,17 @@
 <!DOCTYPE html>
+<?php
+session_start();
+
+if (isset($_REQUEST["accion"])) {
+    $accion = $_REQUEST["accion"];
+}
+if (isset($_REQUEST["idPost"])) {
+    $idPost = $_REQUEST["idPost"];
+}
+if (isset($_REQUEST["TituloPost"])) {
+    $TituloPost = $_REQUEST["TituloPost"];
+}
+?>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -48,11 +61,11 @@
             <?php
             //Titulo y contenido del post
             $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
-            $post = $conexion->verPost(2);
+            $post = $conexion->verPost($idPost);
             foreach ($post as $valor) {
                 echo "<div class='card'>";
                 echo "<div class='card-header'>";
-                echo $valor['TituloPost'];
+                echo $TituloPost;
                 echo "</div>";
                 echo "<div class='card-body'>";
                 echo "<p class='card-text'>";
@@ -70,8 +83,8 @@
             <?php
             //Comentarios leectura/escritura
             $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
-            $comentarios = $conexion->verComentarios(2);
-            
+            $comentarios = $conexion->verComentarios($idPost);
+
             echo "<label for='inputPassword' class='col-lg-2 control-label'>Comentarios</label>";
             foreach ($comentarios as $valor) {
                 echo "<div class='card'>";
@@ -93,8 +106,8 @@
             <button type="submit" class="btn btn-primary" name="boton">Enviar</button>
         </div>
 
-<?php
-include('./templates/footer.php');
-?>
+        <?php
+        include('./templates/footer.php');
+        ?>
     </body>
 </html>

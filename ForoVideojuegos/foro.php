@@ -62,7 +62,7 @@ if (isset($_REQUEST["idTemaUnico"])) {
                     $foro = $conexion->verSubForos($valor['id']);
                     foreach ($foro as $valor) {
                         echo '<div class="card">';
-                        echo "<a href='subforo.php' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloSubForo'] . "</a>";
+                        echo "<a href='subforo.php?accion=ver&idSubForo=". $valor['idSubforo'] ."&TituloSubForo=". $valor['TituloSubForo'] ."' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloSubForo'] . "</a>";
                         echo '</div>';
                     }
                     echo '</div>';
@@ -76,7 +76,7 @@ if (isset($_REQUEST["idTemaUnico"])) {
                 $foro = $conexion->verSubForos($valor['id']);
                 foreach ($foro as $valor) {
                     echo '<div class="card">';
-                    echo "<a href='subforo.php' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloSubForo'] . "</a>";
+                    echo "<a href='subforo.php?accion=ver&idSubForo=". $valor['idSubforo'] ."&TituloSubForo=". $valor['TituloSubForo'] ."' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloSubForo'] . "</a>";
                     echo '</div>';
                 }
                 echo '</div>';
