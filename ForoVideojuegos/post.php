@@ -59,7 +59,6 @@ if (isset($_REQUEST["TituloPost"])) {
         ?>
         <div class="jumbotron jumbotron-fluid mx-auto">
             <?php
-            //Titulo y contenido del post
             $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
             $post = $conexion->verPost($idPost);
             foreach ($post as $valor) {
@@ -81,7 +80,6 @@ if (isset($_REQUEST["TituloPost"])) {
             ?>
 
             <?php
-            //Comentarios leectura/escritura
             $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
             $comentarios = $conexion->verComentarios($idPost);
 
