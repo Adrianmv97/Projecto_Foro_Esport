@@ -90,7 +90,7 @@
             <div class="col-lg-10">
                 <input type="text" class="form-control" id="inputText" placeholder="Comentario">
             </div>
-            <button type="submit" class="btn btn-primary" name="boton">Enviar</button>
+            <button type="submit" class="btn btn-primary" name="boton">Enviar Comentario</button>
         </div>
 
 <?php
