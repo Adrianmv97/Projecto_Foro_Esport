@@ -1,5 +1,28 @@
 <?php
 
+if (isset($_REQUEST["idPost"])) {
+    $idPost = $_REQUEST["idPost"];
+}
+if (isset($_REQUEST["TituloPost"])) {
+    $TituloPost = $_REQUEST["TituloPost"];
+}
+if (isset($_REQUEST["comentario"])) {
+    $comentario = $_REQUEST["comentario"];
+    session_start();
+    if (isset($_SESSION["idUsuario"])) {
+        $idUsuario = $_SESSION["idUsuario"];
+        $nombreUsuario = $_SESSION['nombre'];
+        $apellidoUsuario = $_SESSION['apellido'];
+        require_once 'config.php';
+
+        $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+        $comentario = $conexion->escrituraComentario($idPost, $TituloPost, $comentario, $idUsuario, $nombreUsuario, $apellidoUsuario);
+    } else {
+        echo "no a entrado";
+//header("Location: post.php?accion=ver&idPost=". $idPost ."&TituloPost=". $TituloPost ."");
+    }
+}
+
 class model {
 
     private $conexion;
@@ -31,7 +54,7 @@ class model {
             $arrayFila = array("idSubforo" => $idSubforo, "TituloSubForo" => $tituloSubForo, "idTemaRelacion" => $idTemaRelacion);
             array_push($resultado, $arrayFila);
         }
-         return $resultado;
+        return $resultado;
     }
 
     public function verPost($idPost) {
@@ -62,8 +85,14 @@ class model {
         return $resultado;
     }
 
-    public function escrituraComentario() {
-        
+    public function escrituraComentario($idPost, $TituloPost, $comentario, $idUsuario, $nombreUsuario, $apellidoUsuario) {
+
+        $insercion = $this->conexion->stmt_init();
+
+        $insercion->prepare("INSERT INTO `comentario` (`Comentario`, `IdPostRelacion`, `IdUsuarioRelacion` , `nombreUsuario` , `apellidoUsuario`)"
+                . " VALUES ('$comentario', '$idPost' , '$idUsuario' , '$nombreUsuario' , '$apellidoUsuario' )");
+        $insercion->execute();
+        header("Location: post.php?accion=ver&idPost=" . $idPost . "&TituloPost=" . $TituloPost . "");
     }
 
     public function verPosts($idSubForo) {
@@ -102,11 +131,11 @@ class model {
         $resultado = $consulta->num_rows();
         return $resultado;
     }
-    
-    public function verTema($idTema){
+
+    public function verTema($idTema) {
         $resultado = array();
         $consulta = $this->conexion->stmt_init();
-        $consulta->prepare("SELECT * FROM Temas WHERE idTema = ".$idTema);
+        $consulta->prepare("SELECT * FROM Temas WHERE idTema = " . $idTema);
         $consulta->execute();
         $consulta->bind_result($id, $tituloTema);
         while ($fila = $consulta->fetch()) {

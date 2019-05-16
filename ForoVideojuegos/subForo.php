@@ -33,20 +33,39 @@ if (isset($_REQUEST["TituloSubForo"])) {
                 </span>
             </div>
             <div class="collapse navbar-collapse d-flex flex-row-reverse bd-highlight" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    <div class="p-2 border bg-success">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="registro.html">Registrarse</a>
-                        </li>
-                    </div>
-                </ul>
-                <ul class="navbar-nav">
-                    <div class="p-2 border bg-success">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="iniciarSesion.html">Iniciar Sesión</a>
-                        </li>
-                    </div>
-                </ul>
+                <?php
+                if (isset($_SESSION['idUsuario'])) {
+                    echo "<ul class = 'navbar-nav'>";
+                    echo "<div class = 'p-2 border bg-success'>";
+                    echo "<li class = 'nav-item active'>";
+                    echo "<a class = 'nav-link' href = 'desconectar.php'>Cerrar Sesion</a>";
+                    echo "</li>";
+                    echo "</div>";
+                    echo "</ul>";
+                    echo "<ul class = 'navbar-nav'>";
+                    echo "<div class = 'p-2 border bg-success'>";
+                    echo "<li class = 'nav-item active'>";
+                    echo "<a class = 'nav-link' href = ''>Datos de Usuario(Proximamente)</a>";
+                    echo "</li>";
+                    echo "</div>";
+                    echo "</ul>";
+                }else {
+                    echo "<ul class = 'navbar-nav'>";
+                    echo "<div class = 'p-2 border bg-success'>";
+                    echo "<li class = 'nav-item active'>";
+                    echo "<a class = 'nav-link' href = 'registro.html'>Registrarse</a>";
+                    echo "</li>";
+                    echo "</div>";
+                    echo "</ul>";
+                    echo "<ul class = 'navbar-nav'>";
+                    echo "<div class = 'p-2 border bg-success'>";
+                    echo "<li class = 'nav-item active'>";
+                    echo "<a class = 'nav-link' href = 'iniciarSesion.html'>Iniciar Sesión</a>";
+                    echo "</li>";
+                    echo "</div>";
+                    echo "</ul>";
+                }
+                ?>
             </div>
         </nav>
         <?php
