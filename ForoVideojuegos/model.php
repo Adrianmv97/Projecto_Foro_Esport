@@ -6,6 +6,7 @@ if (isset($_REQUEST["idPost"])) {
 if (isset($_REQUEST["TituloPost"])) {
     $TituloPost = $_REQUEST["TituloPost"];
 }
+
 if (isset($_REQUEST["comentario"])) {
     $comentario = $_REQUEST["comentario"];
     session_start();
@@ -20,6 +21,20 @@ if (isset($_REQUEST["comentario"])) {
     } else {
         header("Location: post.php?accion=ver&idPost=" . $idPost . "&TituloPost=" . $TituloPost . "");
     }
+}
+if (isset($_REQUEST["contenidoPost"])) {
+
+    $idSubForo = $_REQUEST["idSubForo"];
+    $contenidoPost = $_REQUEST["contenidoPost"];
+    session_start();
+
+    $idUsuario = $_SESSION["idUsuario"];
+    $nombreUsuario = $_SESSION['nombre'];
+    $apellidoUsuario = $_SESSION['apellido'];
+    require_once 'config.php';
+
+    $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+    $comentario = $conexion->crearPost($idSubForo,$contenidoPost,$idUsuario,$nombreUsuario,$apellidoUsuario,$TituloPost,$TituloSubForo);
 }
 
 class model {
@@ -118,7 +133,7 @@ class model {
             $arrayFila = array("idUsuario" => $idUsuario, "Nombre" => $nombre, "Apellidos" => $apellidos, "LevelUser" => $levelUser, "Correo" => $correo);
             array_push($resultado, $arrayFila);
         }
-        return $resultado;   
+        return $resultado;
     }
 
     public function verCantidadSubforosAsignadoTema($idTema) {
@@ -146,6 +161,16 @@ class model {
 
     public function desconectar() {
         $this->conexion->close();
+    }
+    
+    public function crearPost($idSubForo,$contenidoPost,$idUsuario,$nombreUsuario,$apellidoUsuario,$TituloPost) {
+
+        $insercion = $this->conexion->stmt_init();
+
+        $insercion->prepare("INSERT INTO `post` (`nombrePost`, `contenidoPost`, `IdSubforoRelacion` , `IdUsuarioRelacion` , `nombreUsuario` , `apellidoUsuario`)"
+                . " VALUES ('$TituloPost', '$contenidoPost' , '$idSubForo' , '$idUsuario' , '$nombreUsuario' , '$apellidoUsuario' )");
+        $insercion->execute();
+        header("Location: foro.php");
     }
 
 }

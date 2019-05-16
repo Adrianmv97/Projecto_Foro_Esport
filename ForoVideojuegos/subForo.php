@@ -49,7 +49,7 @@ if (isset($_REQUEST["TituloSubForo"])) {
                     echo "</li>";
                     echo "</div>";
                     echo "</ul>";
-                }else {
+                } else {
                     echo "<ul class = 'navbar-nav'>";
                     echo "<div class = 'p-2 border bg-success'>";
                     echo "<li class = 'nav-item active'>";
@@ -82,12 +82,28 @@ if (isset($_REQUEST["TituloSubForo"])) {
         echo "<h3>" . $TituloSubForo . "</h3>";
         foreach ($subforo as $valor) {
             echo '<div class="card">';
-            echo "<a href='post.php?accion=ver&idPost=". $valor['idPost'] ."&TituloPost=". $valor['TituloPost'] ."' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloPost'] . "</a>";
+            echo "<a href='post.php?accion=ver&idPost=" . $valor['idPost'] . "&TituloPost=" . $valor['TituloPost'] . "' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloPost'] . "</a>";
             echo '</div>';
         }
 
         echo '</div>';
         $conexion->desconectar();
+        ?>
+
+        <?php
+        if (isset($_SESSION['idUsuario'])) {
+            echo "<form action='model.php' method='POST'>";
+            echo "<div class='col-lg-10'>";
+
+            echo "<input type='text' name='TituloPost' placeholder='Titulo de tu post'>";
+            echo "<input type='text' class='form-control' id='inputText' name='contenidoPost' placeholder='Contenido de tu post'>";
+
+            echo "<input type='hidden' name='idSubForo' value = " . $idSubForo . ">";
+
+            echo "</div>";
+            echo "<button type='submit' class='btn btn-primary'>Crear Post</button>";
+            echo "</form>";
+        }
         ?>
 
     </body>
