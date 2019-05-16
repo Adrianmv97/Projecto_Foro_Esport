@@ -13,7 +13,7 @@ if (!isset($_SESSION['idUsuario'])) {
     header('Location: index.php');
 }
 if (isset($_SESSION['idUsuario'])) {
-    if ($_SESSION['idUsuario'] != 1) {
+    if ($_SESSION['levelUser'] != 10) {
         header('Location: index.php');
     }
 }
@@ -40,12 +40,30 @@ if (isset($_SESSION['idUsuario'])) {
     <body>
         <div id="tabs">
             <ul>
-                <li><a href="#tabs-1">Temas</a></li>
-                <li><a href="#tabs-2">Subforos</a></li>
-                <li><a href="#tabs-3">Post</a></li>
-                <li><a href="#tabs-4">Usuarios</a></li>
+                <li><a href="#tabs-1">Usuarios</a></li>
+                <li><a href="#tabs-2">Temas</a></li>
+                <li><a href="#tabs-3">SubForos</a></li>
+                <li><a href="#tabs-4">Post</a></li>
             </ul>
             <div id="tabs-1">
+                <?php
+                $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+                $usuarios = $conexion->verTodosUsuarios();
+                foreach ($usuarios as $valor) {
+                    echo $valor['idUsuario'];
+                    echo " --- ";
+                    echo $valor['Nombre'];
+                    echo " ";
+                    echo $valor['Apellidos'];
+                    echo " <-------> ";
+                    echo $valor['Correo'];
+                    echo "<br>";
+                }
+                $conexion->desconectar();
+                ?>
+
+            </div>
+            <div id="tabs-2">
                 <?php
                 $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
                 $articulos = $conexion->verTemas();
@@ -55,9 +73,17 @@ if (isset($_SESSION['idUsuario'])) {
                     echo "<div>Tema: " . $valor['TituloTema'] . " -- Subforos -> " . $cantidad . "</div>";
                 }
                 $conexion->desconectar();
+
+                echo "<form action='model.php' method='POST'>";
+                echo "<div class='col-lg-10'>";
+                echo "<input type='text' name='TituloTema' placeholder='Titulo del Tema'>";
+                echo "</div>";
+                echo "<button type='submit' class='btn btn-primary'>Crear Tema</button>";
+                echo "</form>";
                 ?>
+
             </div>
-            <div id="tabs-2">
+            <div id="tabs-3">
                 <?php
                 $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
                 $temas = $conexion->verTemas();
@@ -71,12 +97,28 @@ if (isset($_SESSION['idUsuario'])) {
                             echo $valor['TituloSubForo'];
                         }
                         echo "</div>";
+                        echo "<br>";
                     }
                 }
                 $conexion->desconectar();
+                
+                echo "<form action='model.php' method='POST'>";
+                echo "<div class='col-lg-10'>";
+                echo "<input type='text' name='TituloNuevoSubForo' placeholder='Titulo del Subforo'>";
+                echo "</div>";
+                echo "<div class='col-lg-10'>";
+                echo "<select name='idRelacionTema'>";
+                foreach ($temas as $valor){
+                    echo "<option value= ".$valor['id'].">".$valor['TituloTema']."</option>";
+                }
+                echo "</select>";
+                echo "</div>";
+                echo "<button type='submit' class='btn btn-primary'>Crear Subforo</button>";
+                echo "</form>";
                 ?>
+
             </div>
-            <div id="tabs-3">
+            <div id="tabs-4">
                 <?php
                 $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
                 $temas = $conexion->verTemas();
@@ -95,33 +137,16 @@ if (isset($_SESSION['idUsuario'])) {
                                     echo $valor['TituloPost'];
                                 }
                                 echo "</div>";
+                                echo "<br>";
                             }
                         }
                     }
-
-                    ;
                 }
                 $conexion->desconectar();
                 ?>
-            </div>
-            <div id="tabs-4">
-                <?php
-                $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
-                $usuarios = $conexion->verTodosUsuarios();
 
-                foreach ($usuarios as $valor) {
-                    echo $valor['idUsuario'];
-                    echo " --- ";
-                    echo $valor['Nombre'];
-                    echo " ";
-                    echo $valor['Apellidos'];
-                    echo " <-------> ";
-                    echo $valor['Correo'];
-                    echo "<br>";
-                }
-                $conexion->desconectar();
-                ?>
             </div>
         </div>
+        <button class='btn btn-primary'><a href="index.php">Salir</a></button>
     </body>
 </html>

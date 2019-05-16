@@ -1,4 +1,55 @@
 <?php
+require_once 'config.php';
+
+if (isset($_REQUEST["idPost"])) {
+    $idPost = $_REQUEST["idPost"];
+}
+if (isset($_REQUEST["TituloPost"])) {
+    $TituloPost = $_REQUEST["TituloPost"];
+}
+
+if (isset($_REQUEST["comentario"])) {
+    $comentario = $_REQUEST["comentario"];
+    session_start();
+    if (isset($_SESSION["idUsuario"])) {
+        $idUsuario = $_SESSION["idUsuario"];
+        $nombreUsuario = $_SESSION['nombre'];
+        $apellidoUsuario = $_SESSION['apellido'];
+        
+
+        $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+        $comentario = $conexion->escrituraComentario($idPost, $TituloPost, $comentario, $idUsuario, $nombreUsuario, $apellidoUsuario);
+    } else {
+        header("Location: post.php?accion=ver&idPost=" . $idPost . "&TituloPost=" . $TituloPost . "");
+    }
+}
+if (isset($_REQUEST["contenidoPost"])) {
+
+    $idSubForo = $_REQUEST["idSubForo"];
+    $contenidoPost = $_REQUEST["contenidoPost"];
+    session_start();
+
+    $idUsuario = $_SESSION["idUsuario"];
+    $nombreUsuario = $_SESSION['nombre'];
+    $apellidoUsuario = $_SESSION['apellido'];
+
+    $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+    $comentario = $conexion->crearPost($idSubForo,$contenidoPost,$idUsuario,$nombreUsuario,$apellidoUsuario,$TituloPost,$TituloSubForo);
+}
+
+if (isset($_REQUEST["TituloTema"])) {
+    $TituloTema = $_REQUEST["TituloTema"];
+    $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+    $comentario = $conexion->crearTema($TituloTema);
+}
+
+if (isset($_REQUEST["TituloNuevoSubForo"])) {
+    $TituloNuevoSubForo = $_REQUEST["TituloNuevoSubForo"];
+    $idRelacionTema = $_REQUEST["idRelacionTema"];
+    
+    $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+    $comentario = $conexion->crearSubForo($TituloNuevoSubForo,$idRelacionTema);
+}
 
 class model {
 
@@ -31,7 +82,7 @@ class model {
             $arrayFila = array("idSubforo" => $idSubforo, "TituloSubForo" => $tituloSubForo, "idTemaRelacion" => $idTemaRelacion);
             array_push($resultado, $arrayFila);
         }
-         return $resultado;
+        return $resultado;
     }
 
     public function verPost($idPost) {
@@ -62,8 +113,14 @@ class model {
         return $resultado;
     }
 
-    public function escrituraComentario() {
-        
+    public function escrituraComentario($idPost, $TituloPost, $comentario, $idUsuario, $nombreUsuario, $apellidoUsuario) {
+
+        $insercion = $this->conexion->stmt_init();
+
+        $insercion->prepare("INSERT INTO `comentario` (`Comentario`, `IdPostRelacion`, `IdUsuarioRelacion` , `nombreUsuario` , `apellidoUsuario`)"
+                . " VALUES ('$comentario', '$idPost' , '$idUsuario' , '$nombreUsuario' , '$apellidoUsuario' )");
+        $insercion->execute();
+        header("Location: post.php?accion=ver&idPost=" . $idPost . "&TituloPost=" . $TituloPost . "");
     }
 
     public function verPosts($idSubForo) {
@@ -102,11 +159,11 @@ class model {
         $resultado = $consulta->num_rows();
         return $resultado;
     }
-    
-    public function verTema($idTema){
+
+    public function verTema($idTema) {
         $resultado = array();
         $consulta = $this->conexion->stmt_init();
-        $consulta->prepare("SELECT * FROM Temas WHERE idTema = ".$idTema);
+        $consulta->prepare("SELECT * FROM Temas WHERE idTema = " . $idTema);
         $consulta->execute();
         $consulta->bind_result($id, $tituloTema);
         while ($fila = $consulta->fetch()) {
@@ -119,5 +176,36 @@ class model {
     public function desconectar() {
         $this->conexion->close();
     }
+    
+    public function crearPost($idSubForo,$contenidoPost,$idUsuario,$nombreUsuario,$apellidoUsuario,$TituloPost) {
+
+        $insercion = $this->conexion->stmt_init();
+
+        $insercion->prepare("INSERT INTO `post` (`nombrePost`, `contenidoPost`, `IdSubforoRelacion` , `IdUsuarioRelacion` , `nombreUsuario` , `apellidoUsuario`)"
+                . " VALUES ('$TituloPost', '$contenidoPost' , '$idSubForo' , '$idUsuario' , '$nombreUsuario' , '$apellidoUsuario' )");
+        $insercion->execute();
+        header("Location: foro.php");
+    }
+    
+    public function crearTema($TituloTema) {
+
+        $insercion = $this->conexion->stmt_init();
+
+        $insercion->prepare("INSERT INTO `temas` (`nombreTema`)"
+                . " VALUES ('$TituloTema')");
+        $insercion->execute();
+        header("Location: herramientaAdministrativa.php");
+    }
+    
+    public function crearSubForo($TituloNuevoSubForo,$idRelacionTema) {
+
+        $insercion = $this->conexion->stmt_init();
+
+        $insercion->prepare("INSERT INTO `subforo` (`nombreSubforo`, `idTemaRelacion`)"
+                . " VALUES ('$TituloNuevoSubForo' , $idRelacionTema)");
+        $insercion->execute();
+        header("Location: herramientaAdministrativa.php");
+    }
+
 
 }
