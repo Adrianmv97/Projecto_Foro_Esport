@@ -10,9 +10,6 @@ if (isset($_REQUEST["accion"])) {
 if (isset($_REQUEST["idPost"])) {
     $idPost = $_REQUEST["idPost"];
 }
-if (isset($_REQUEST["TituloPost"])) {
-    $TituloPost = $_REQUEST["TituloPost"];
-}
 ?>
 <html>
     <head>
@@ -79,6 +76,7 @@ if (isset($_REQUEST["TituloPost"])) {
             $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
             $post = $conexion->verPost($idPost);
             foreach ($post as $valor) {
+                $TituloPost = $valor['TituloPost'];
                 echo "<div class='card'>";
                 echo "<div class='card-header'>";
                 echo $TituloPost;
