@@ -1,4 +1,5 @@
 <?php
+require_once 'config.php';
 
 if (isset($_REQUEST["idPost"])) {
     $idPost = $_REQUEST["idPost"];
@@ -14,7 +15,7 @@ if (isset($_REQUEST["comentario"])) {
         $idUsuario = $_SESSION["idUsuario"];
         $nombreUsuario = $_SESSION['nombre'];
         $apellidoUsuario = $_SESSION['apellido'];
-        require_once 'config.php';
+        
 
         $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
         $comentario = $conexion->escrituraComentario($idPost, $TituloPost, $comentario, $idUsuario, $nombreUsuario, $apellidoUsuario);
@@ -31,10 +32,23 @@ if (isset($_REQUEST["contenidoPost"])) {
     $idUsuario = $_SESSION["idUsuario"];
     $nombreUsuario = $_SESSION['nombre'];
     $apellidoUsuario = $_SESSION['apellido'];
-    require_once 'config.php';
 
     $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
     $comentario = $conexion->crearPost($idSubForo,$contenidoPost,$idUsuario,$nombreUsuario,$apellidoUsuario,$TituloPost,$TituloSubForo);
+}
+
+if (isset($_REQUEST["TituloTema"])) {
+    $TituloTema = $_REQUEST["TituloTema"];
+    $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+    $comentario = $conexion->crearTema($TituloTema);
+}
+
+if (isset($_REQUEST["TituloNuevoSubForo"])) {
+    $TituloNuevoSubForo = $_REQUEST["TituloNuevoSubForo"];
+    $idRelacionTema = $_REQUEST["idRelacionTema"];
+    
+    $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+    $comentario = $conexion->crearSubForo($TituloNuevoSubForo,$idRelacionTema);
 }
 
 class model {
@@ -172,5 +186,26 @@ class model {
         $insercion->execute();
         header("Location: foro.php");
     }
+    
+    public function crearTema($TituloTema) {
+
+        $insercion = $this->conexion->stmt_init();
+
+        $insercion->prepare("INSERT INTO `temas` (`nombreTema`)"
+                . " VALUES ('$TituloTema')");
+        $insercion->execute();
+        header("Location: herramientaAdministrativa.php");
+    }
+    
+    public function crearSubForo($TituloNuevoSubForo,$idRelacionTema) {
+
+        $insercion = $this->conexion->stmt_init();
+
+        $insercion->prepare("INSERT INTO `subforo` (`nombreSubforo`, `idTemaRelacion`)"
+                . " VALUES ('$TituloNuevoSubForo' , $idRelacionTema)");
+        $insercion->execute();
+        header("Location: herramientaAdministrativa.php");
+    }
+
 
 }

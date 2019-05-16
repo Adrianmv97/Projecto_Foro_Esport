@@ -73,6 +73,13 @@ if (isset($_SESSION['idUsuario'])) {
                     echo "<div>Tema: " . $valor['TituloTema'] . " -- Subforos -> " . $cantidad . "</div>";
                 }
                 $conexion->desconectar();
+
+                echo "<form action='model.php' method='POST'>";
+                echo "<div class='col-lg-10'>";
+                echo "<input type='text' name='TituloTema' placeholder='Titulo del Tema'>";
+                echo "</div>";
+                echo "<button type='submit' class='btn btn-primary'>Crear Tema</button>";
+                echo "</form>";
                 ?>
 
             </div>
@@ -90,9 +97,24 @@ if (isset($_SESSION['idUsuario'])) {
                             echo $valor['TituloSubForo'];
                         }
                         echo "</div>";
+                        echo "<br>";
                     }
                 }
                 $conexion->desconectar();
+                
+                echo "<form action='model.php' method='POST'>";
+                echo "<div class='col-lg-10'>";
+                echo "<input type='text' name='TituloNuevoSubForo' placeholder='Titulo del Subforo'>";
+                echo "</div>";
+                echo "<div class='col-lg-10'>";
+                echo "<select name='idRelacionTema'>";
+                foreach ($temas as $valor){
+                    echo "<option value= ".$valor['id'].">".$valor['TituloTema']."</option>";
+                }
+                echo "</select>";
+                echo "</div>";
+                echo "<button type='submit' class='btn btn-primary'>Crear Subforo</button>";
+                echo "</form>";
                 ?>
 
             </div>
@@ -115,6 +137,7 @@ if (isset($_SESSION['idUsuario'])) {
                                     echo $valor['TituloPost'];
                                 }
                                 echo "</div>";
+                                echo "<br>";
                             }
                         }
                     }
@@ -124,5 +147,6 @@ if (isset($_SESSION['idUsuario'])) {
 
             </div>
         </div>
+        <button class='btn btn-primary'><a href="index.php">Salir</a></button>
     </body>
 </html>
