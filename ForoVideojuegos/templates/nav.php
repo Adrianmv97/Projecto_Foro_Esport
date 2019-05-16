@@ -30,7 +30,7 @@
         </div>
         <?php
         if (isset($_SESSION['idUsuario'])) {
-            if ($_SESSION['idUsuario'] == 1) {
+            if ($_SESSION['levelUser'] == 10) {
                 echo "<div class='col px-md-5'>";
                 echo "<ul class='navbar-nav mr-auto'>";
                 echo "<li class='nav-item active p-4'>";

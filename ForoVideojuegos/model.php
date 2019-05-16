@@ -18,8 +18,7 @@ if (isset($_REQUEST["comentario"])) {
         $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
         $comentario = $conexion->escrituraComentario($idPost, $TituloPost, $comentario, $idUsuario, $nombreUsuario, $apellidoUsuario);
     } else {
-        echo "no a entrado";
-//header("Location: post.php?accion=ver&idPost=". $idPost ."&TituloPost=". $TituloPost ."");
+        header("Location: post.php?accion=ver&idPost=" . $idPost . "&TituloPost=" . $TituloPost . "");
     }
 }
 
@@ -119,7 +118,7 @@ class model {
             $arrayFila = array("idUsuario" => $idUsuario, "Nombre" => $nombre, "Apellidos" => $apellidos, "LevelUser" => $levelUser, "Correo" => $correo);
             array_push($resultado, $arrayFila);
         }
-        return $resultado;
+        return $resultado;   
     }
 
     public function verCantidadSubforosAsignadoTema($idTema) {
