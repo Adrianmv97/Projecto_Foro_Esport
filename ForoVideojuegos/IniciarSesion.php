@@ -19,23 +19,24 @@
         $count = mysqli_num_rows($result);
         if ($count == 1) {
             while ($row = $result->fetch_array()) {
-                echo "aqui tambien";
-                if ($row['user'] == $usuario && $row['password'] == $contrasena) {
-                    session_start();
-                    $_SESSION['idUsuario'] = $row['idUsuario'];
-                    $_SESSION['nombre'] = $row['nombre'];
-                    $_SESSION['apellido'] = $row['apellidos'];
-                    $_SESSION['levelUser'] = $row['levelUser'];
-                    header("Location: index.php");
-                    echo "guardo la sesion";
-                } else if ($row['user'] == $usuario && $row['password'] != $contrasena) {
-                    echo ("<div>");
-                    echo ("La contrasena en incorrecta, porfavor vuelve a escribirla");
-                    echo ("<br>");
-                    echo ("<a href='iniciarSesion.html'>Iniciar Sesion</a>");
-                    echo ("<br>");
-                    echo ("<a href='index.php'>Inicio</a>");
-                    echo ("</div>");
+                if ($row['user'] == $usuario) {
+                    if (password_verify($contrasena, $row['password'])) {
+                        session_start();
+                        $_SESSION['idUsuario'] = $row['idUsuario'];
+                        $_SESSION['nombre'] = $row['nombre'];
+                        $_SESSION['apellido'] = $row['apellidos'];
+                        $_SESSION['levelUser'] = $row['levelUser'];
+                        header("Location: index.php");
+                        echo "guardo la sesion";
+                    } else if ($row['user'] == $usuario && $row['password'] != $contrasena) {
+                        echo ("<div>");
+                        echo ("La contrasena en incorrecta, porfavor vuelve a escribirla");
+                        echo ("<br>");
+                        echo ("<a href='iniciarSesion.html'>Iniciar Sesion</a>");
+                        echo ("<br>");
+                        echo ("<a href='index.php'>Inicio</a>");
+                        echo ("</div>");
+                    }
                 }
             }
         } else {

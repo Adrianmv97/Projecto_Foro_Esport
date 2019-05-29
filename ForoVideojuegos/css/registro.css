@@ -1,40 +1,105 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 12-dic-2018, 16:46:26
-    Author     : Adrian
-*/
-    body{
-        background-color: grey;
-    }
-    #logo {
-        text-align: center;
-    }
-    .padre{
-        display: flex;
-        justify-content: center;
-        text-align: center;
+body {
+    font-family: sans-serif;
+    background: #999999;
+    color: #999999;
+}
+#logo {
+    text-align: center;
+}
+.hijo, h1, form, fieldset, input, textarea {
+    margin: 0; 
+    padding: 0; 
+    border: 0; 
+    outline: none;
+}
+.hijo {
+    width: 600px; 
+    margin: auto; 
+    padding: 30px 30px; 
+    margin-top:60px;
+    background: #111111;
+    border-radius: 10px;
+}
+.hijo a{
+    text-decoration:none;
+    color:#666666;
+    margin-right: 300px;
+    text-align: left;
+}
+h1 {
+    font-size: 26px; 
+    color: #999999; 
+    text-transform: uppercase;
+    text-align: center; 
+    margin: 0 0 30px 0; 
+    text-shadow: 0px 3px 2px #000000;
+}
+form {
+    margin-bottom:25px;
+    text-align: right;
+}
+label {
+    float: left; 
+    margin: 10px 20px 0 0; 
+    text-align: center; 
+    font-size: 14px; 
+    color: #999999;
+    font-weight:bold;
+    text-transform: uppercase; 
+    text-shadow: 0px 2px 0px #111111;
+}
+input {
+    width: 225px; 
+    height: 35px; 
+    padding: 5px 20px 0px 20px; 
+    margin: 0 0 20px 20px;
+    background: #666666;
+    background: -moz-linear-gradient(top, #999999 0%, #b2b2b2 20%);
+    border-radius: 5px;
+    font-size: 14px; 
+    color: #444444;  
+    text-shadow: 0px -1px 0px #222222;
+}
+input::-webkit-input-placeholder {
+    color: #333333; 
+    text-shadow: 0px -1px 0px #222222;
+}
+input:-moz-placeholder {
+    color: #333333; 
+    text-shadow: 0px -1px 0px #222222;
+}
+input:focus{
+    background: #999999;
+    border: 1px solid #CCCCCC;
+    background: -moz-linear-gradient(top, #999999 0%, #dddddd 20%);
+}
+input[type=submit], input[type=reset] {
+    width: 120px; 
+    height: 30px; 
+    float: right; 
+    padding: 5px 5px; 
+    margin: 0 15px 0 0;
+    background: -moz-linear-gradient(top, #999999 0%, #b2b2b2 20%);
+    cursor: pointer;
+}
+input[type=submit]:hover, input[type=reset]:hover{
+    border: 3px solid #CCCCCC;
+    background: -moz-linear-gradient(top, #999999 0%, #dddddd 20%);
+}
 
+#botonIniciarSesion {
+    text-align: left;
+}
+
+@media only screen and (max-width: 450px) {
+    .hijo {
+        width: 220px;
     }
-    .hijo{
-        border: 1px solid black;
-        padding: 15px;
-        background-color: white;
+    label {
+        margin: 10px 20px 0 20px;
+        text-align: center;
     }
-    #alertUser{
-        position: absolute;
-        top: -3px;
-        left: 21%;
+    input {
+        width: 150px;
     }
-    .alertVisible{
-        color: red;
-        font-size: 12px;
-    }
-    .alertInvisible{
-        color: red;
-        font-size: 12px;
-        display: none;
-    }
+}
