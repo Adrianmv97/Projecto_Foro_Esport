@@ -51,6 +51,20 @@ if (isset($_REQUEST["TituloNuevoSubForo"])) {
     $comentario = $conexion->crearSubForo($TituloNuevoSubForo,$idRelacionTema);
 }
 
+if (isset($_REQUEST["accion"])) {
+    $accion = $_REQUEST["accion"];
+    if ($accion == "drop"){
+        $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+        if (isset($_REQUEST['idPost'])){
+            $conexion->dropPost($_REQUEST['idPost']);
+        } else if (isset($_REQUEST['idSubforo'])){
+            $conexion->dropSubForo($_REQUEST['idSubforo']);
+        } else if (isset($_REQUEST['idTema'])){
+            $conexion->dropTema($_REQUEST['idTema']);
+        }
+    }
+}
+
 class model {
 
     private $conexion;
@@ -204,6 +218,25 @@ class model {
         $insercion->prepare("INSERT INTO `subforo` (`nombreSubforo`, `idTemaRelacion`)"
                 . " VALUES ('$TituloNuevoSubForo' , $idRelacionTema)");
         $insercion->execute();
+        header("Location: herramientaAdministrativa.php");
+    }
+    
+    public function dropTema($idTema){
+        $drop = $this->conexion->stmt_init();
+        $drop->prepare("DELETE FROM `temas` WHERE `temas`.`idTema` = $idTema");
+        $drop->execute();
+        header("Location: herramientaAdministrativa.php");
+    }
+    public function dropSubForo($idSubforo){
+        $drop = $this->conexion->stmt_init();
+        $drop->prepare("DELETE FROM `subforo` WHERE `subforo`.`idSubforo` = $idSubforo");
+        $drop->execute();
+        header("Location: herramientaAdministrativa.php");
+    }
+    public function dropPost($idPost){
+        $drop = $this->conexion->stmt_init();
+        $drop->prepare("DELETE FROM `post` WHERE `post`.`idPost` = $idPost");
+        $drop->execute();
         header("Location: herramientaAdministrativa.php");
     }
 

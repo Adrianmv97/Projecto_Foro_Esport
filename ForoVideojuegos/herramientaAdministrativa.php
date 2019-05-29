@@ -133,7 +133,7 @@ if (isset($_SESSION['idUsuario'])) {
                     echo "Subforos asociados: " . $cantidad . " ";
                     echo "</div>";
                     echo "<div id='botonEliminar'>";
-                    echo "<a href='eliminarTema.php'><button>Eliminar Tema</button></a>";
+                    echo "<a href='model.php?accion=drop&idTema= ". $valor['id'] ."'><button>Eliminar Tema</button></a>";
                     echo "</div>";
                     echo "<br/>";
                 }
@@ -162,7 +162,7 @@ if (isset($_SESSION['idUsuario'])) {
                         foreach ($subforos as $valor) {
                             echo "<br>";
                             echo $valor['TituloSubForo'];
-                            echo " <a href='eliminarSubForo.php'><button>Eliminar Subforo</button></a>";
+                            echo " <a href='model.php?accion=drop&idSubforo= ". $valor['idSubforo'] ."'><button>Eliminar Subforo</button></a>";
                         }
                         echo "</div>";
                         echo "<br>";
@@ -205,7 +205,7 @@ if (isset($_SESSION['idUsuario'])) {
                                 foreach ($posts as $valor) {
                                     echo "<br>";
                                     echo $valor['TituloPost'];
-                                    echo " <a href='eliminarPost.php'><button>Eliminar Post</button></a>";
+                                    echo " <a href='model.php?accion=drop&idPost= ". $valor['idPost'] ."'><button>Eliminar Post</button></a>";
                                 }
                                 echo "</div>";
                                 echo "<br>";
