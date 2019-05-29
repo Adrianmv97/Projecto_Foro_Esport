@@ -66,13 +66,12 @@ session_start();
             Creadores
         </div>
         <div class="card-body">
-            <p class="card-text">Datos de los creadores</p>
+            <p class="card-text">Adrian Muñoz Valle</p>
             <br>
-            <p class="card-text">Datos de los creadores</p>
+            <p class="card-text">Ramon Botella Ciria</p>
             <br>
-            <p class="card-text">Datos de los creadores</p>
+            <p class="card-text">victor Gomez-Calcerrada San Juan</p>
             <br>
-            <p class="card-text">Datos de los creadores</p>
         </div>
     </div>
 </div>
