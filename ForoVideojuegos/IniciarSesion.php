@@ -9,25 +9,25 @@
         $usuario = $_REQUEST["usuario"];
         $contrasena = $_REQUEST["contrasena"];
 
-        $usuario = strtolower($usuario);
-
         $conn = mysqli_connect('localhost', 'root', '', 'foroesport', '3306');
         if (!$conn) {
             die('Could not connect to MySQL: ' . mysqli_connect_error());
         }
 
-        $accion = "SELECT idUsuario,user,password,nombre,apellidos FROM usuarios WHERE user = '$usuario'";
+        $accion = "SELECT idUsuario,user,password,nombre,apellidos,levelUser FROM usuarios WHERE user = '$usuario'";
         $result = $conn->query($accion);
         $count = mysqli_num_rows($result);
         if ($count == 1) {
             while ($row = $result->fetch_array()) {
+                echo "aqui tambien";
                 if ($row['user'] == $usuario && $row['password'] == $contrasena) {
-                    echo ("<form name='usuarioLanzado' action='index.php' method='POST'>");
                     session_start();
                     $_SESSION['idUsuario'] = $row['idUsuario'];
                     $_SESSION['nombre'] = $row['nombre'];
                     $_SESSION['apellido'] = $row['apellidos'];
-                    echo ("</form>");
+                    $_SESSION['levelUser'] = $row['levelUser'];
+                    header("Location: index.php");
+                    echo "guardo la sesion";
                 } else if ($row['user'] == $usuario && $row['password'] != $contrasena) {
                     echo ("<div>");
                     echo ("La contrasena en incorrecta, porfavor vuelve a escribirla");
@@ -55,7 +55,4 @@
         mysqli_close($conn);
         ?>
     </body>
-    <script>
-        document.usuarioLanzado.submit();
-    </script>
 </html>
