@@ -11,6 +11,9 @@ if (isset($_REQUEST["idSubForo"])) {
 if (isset($_REQUEST["TituloSubForo"])) {
     $TituloSubForo = $_REQUEST["TituloSubForo"];
 }
+if (!isset( $_SESSION['idUsuario'])){
+    header("Location: accessDenied.php");
+}
 ?>
 <html>
     <head>
@@ -28,9 +31,6 @@ if (isset($_REQUEST["TituloSubForo"])) {
     <body>
         <nav class="navbar navbar-light bg-primary">
             <div class="collapse navbar-collapse d-flex flex-row bd-highlight" id="navbarText" id="datos">
-                <span class="navbar-text">
-                    Datos de usuario
-                </span>
             </div>
             <div class="collapse navbar-collapse d-flex flex-row-reverse bd-highlight" id="navbarSupportedContent">
                 <?php

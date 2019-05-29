@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+<?php
+session_start();
+
+if (!isset( $_SESSION['idUsuario'])){
+    header("Location: accessDenied.php");
+}
+?>
 <html>
 <head>
     <meta charset="utf-8" />

@@ -1,17 +1,5 @@
-<!DOCTYPE html>
 <?php
 session_start();
-
-if (isset($_REQUEST["accion"])) {
-    $accion = $_REQUEST["accion"];
-}
-if (isset($_REQUEST["idTemaUnico"])) {
-    $idTemaUnico = $_REQUEST["idTemaUnico"];
-}
-
-if (!isset( $_SESSION['idUsuario'])){
-    header("Location: accessDenied.php");
-}
 ?>
 <html>
     <head>
@@ -29,9 +17,6 @@ if (!isset( $_SESSION['idUsuario'])){
     <body>
         <nav class="navbar navbar-light bg-primary">
             <div class="collapse navbar-collapse d-flex flex-row bd-highlight" id="navbarText" id="datos">
-                <span class="navbar-text">
-                    Datos de usuario
-                </span>
             </div>
             <div class="collapse navbar-collapse d-flex flex-row-reverse bd-highlight" id="navbarSupportedContent">
                 <?php
@@ -70,44 +55,7 @@ if (!isset( $_SESSION['idUsuario'])){
             </div>
         </nav>
         <?php
-        include('./templates/nav.php');
-
-        require_once 'config.php';
-        require_once 'model.php';
-
-        $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
-        if (isset($accion)) {
-            if ($accion == "ver") {
-                $tema = $conexion->verTema($idTemaUnico);
-                foreach ($tema as $valor) {
-                    echo '<div class="jumbotron jumbotron-fluid mx-auto">';
-                    echo "<h3>" . $valor['TituloTema'] . "</h3>";
-                    $foro = $conexion->verSubForos($valor['id']);
-                    foreach ($foro as $valor) {
-                        echo '<div class="card">';
-                        echo "<a href='subforo.php?accion=ver&idSubForo=". $valor['idSubforo'] ."&TituloSubForo=". $valor['TituloSubForo'] ."' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloSubForo'] . "</a>";
-                        echo '</div>';
-                    }
-                    echo '</div>';
-                }
-            }
-        } else {
-            $temas = $conexion->verTemas();
-            foreach ($temas as $valor) {
-                echo '<div class="jumbotron jumbotron-fluid mx-auto">';
-                echo "<h3>" . $valor['TituloTema'] . "</h3>";
-                $foro = $conexion->verSubForos($valor['id']);
-                foreach ($foro as $valor) {
-                    echo '<div class="card">';
-                    echo "<a href='subforo.php?accion=ver&idSubForo=". $valor['idSubforo'] ."&TituloSubForo=". $valor['TituloSubForo'] ."' class='btn btn-primary btn-lg btn-block' role='button' aria-pressed='true'>" . $valor['TituloSubForo'] . "</a>";
-                    echo '</div>';
-                }
-                echo '</div>';
-            }
-        }
-
-        include('./templates/footer.php');
-        $conexion->desconectar();
+        include('./templates/denied.php');
         ?>
     </body>
 </html>
