@@ -10,6 +10,9 @@ and open the template in the editor.
     body{
         background-color: grey;
     }
+    #logo {
+        text-align: center;
+    }
     .padre{
         display: flex;
         justify-content: center;

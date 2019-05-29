@@ -1,7 +1,7 @@
 <nav class="navbar-expand-lg navbar-light bg-light">
     <div class="col px-md-5">
         <a class="navbar-brand" href="index.php">
-            <img src="https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo1.jpg" width="300" height="80" alt="logo del foro">
+            <img src="imagenes/LogoEsport.jpg" width="150" height="150" alt="logo del foro">
         </a>
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
