@@ -53,6 +53,7 @@ if (isset($_REQUEST["TituloNuevoSubForo"])) {
 
 if (isset($_REQUEST["accion"])) {
     $accion = $_REQUEST["accion"];
+    
     if ($accion == "drop"){
         $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
         if (isset($_REQUEST['idPost'])){
@@ -62,6 +63,14 @@ if (isset($_REQUEST["accion"])) {
         } else if (isset($_REQUEST['idTema'])){
             $conexion->dropTema($_REQUEST['idTema']);
         }
+    }
+    
+    if ($accion == "ban"){
+        $idUsuario = $_REQUEST['idUsuario'];
+        $nombreUsuario = $_REQUEST['nombreUsuario'];
+        $tipoBaneo = $_REQUEST['tipoBaneo'];
+        $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+        $conexion->banUsuario($idUsuario,$nombreUsuario,$tipoBaneo);
     }
 }
 
@@ -238,6 +247,34 @@ class model {
         $drop->prepare("DELETE FROM `post` WHERE `post`.`idPost` = $idPost");
         $drop->execute();
         header("Location: herramientaAdministrativa.php");
+    }
+    
+    public function banUsuario($idUsuario,$nombreUsuario,$tipoBaneo){
+        
+        $localTime = new DateTime("now");
+        if ($tipoBaneo == 1){
+            $tiempoBaneo = "+1 day";
+        } else if($tipoBaneo == 2){
+            $tiempoBaneo = "+2 day";
+        } else if($tipoBaneo == 3){
+            $tiempoBaneo = "+7 day";
+        } else if($tipoBaneo == 4){
+            $tiempoBaneo = "+1 month";
+        } else if($tipoBaneo == 5){
+            $tiempoBaneo ="9999-12-31 23:59:59";
+        }
+        echo $localTime->format('Y-m-d H:i:s');
+        echo "<br>";
+        $localTime->modify($tiempoBaneo);
+        echo $localTime->format('Y-m-d H:i:s');
+        
+                /*
+        $drop = $this->conexion->stmt_init();
+        $drop->prepare("DELETE FROM `post` WHERE `post`.`idPost` = $idPost");
+        $drop->execute();
+        header("Location: herramientaAdministrativa.php");
+                 * 
+                 */
     }
 
 

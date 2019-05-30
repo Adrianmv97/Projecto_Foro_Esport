@@ -113,7 +113,7 @@ if (isset($_SESSION['idUsuario'])) {
                     echo "<br/>";
                     echo "Correo Electronico: " . $valor['Correo'];
                     echo "</div>";
-                    echo "<a href='formularioBaneos.php'><button type='button'>Banear a " . $valor['Nombre'] . "</button></a>";
+                    echo "<a href='formularioBaneos.php?accion=ban&idUsuario=". $valor['idUsuario'] ."&nombreUsuario=". $valor['Nombre'] ."'><button type='button'>Banear a  Usuario</button></a>";
                     echo "</ul>";
                 }
                 $conexion->desconectar();
