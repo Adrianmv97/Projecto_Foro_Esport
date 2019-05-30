@@ -73,6 +73,16 @@ if (isset($_REQUEST["accion"])) {
         $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
         $conexion->banUsuario($idUsuario, $nombreUsuario, $tipoBaneo);
     }
+    if ($accion == "modDatosUsuario") {
+        $idUsuario = $_REQUEST['idUsuario'];
+        $nombreUsuario = $_REQUEST['cambiarNombre'];
+        $apellidoUsuario = $_REQUEST['cambiarApellidos'];
+        $correoUsuario = $_REQUEST['cambiarCorreo'];
+        
+        $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+        $conexion->modDatosUsuarios($idUsuario,$nombreUsuario,$apellidoUsuario,$correoUsuario);
+    }
+    
 }
 
 class model {
@@ -300,6 +310,27 @@ class model {
             }
             return $resultado;
         }
+    }
+    
+    public function verDatosUsuario($idUsuario) {
+        $resultado = array();
+        $consulta = $this->conexion->stmt_init();
+        $consulta->prepare("SELECT idUsuario,Correo,Nombre,Apellidos,LevelUser FROM usuarios WHERE idUsuario = $idUsuario");
+        $consulta->execute();
+        $consulta->bind_result($idUsuario, $correo, $nombre, $apellidos, $levelUser);
+        while ($fila = $consulta->fetch()) {
+            $arrayFila = array("idUsuario" => $idUsuario, "Nombre" => $nombre, "Apellidos" => $apellidos, "LevelUser" => $levelUser, "Correo" => $correo);
+            array_push($resultado, $arrayFila);
+        }
+        return $resultado;
+    }
+    
+    public function modDatosUsuarios($idUsuario,$nombreUsuario,$apellidoUsuario,$correoUsuario) {
+        $modificacion = $this->conexion->stmt_init();
+        $modificacion->prepare("UPDATE `usuarios` SET `Correo` = '$correoUsuario', `Nombre` = '$nombreUsuario', `Apellidos` = '$apellidoUsuario'"
+                . " WHERE `usuarios`.`idUsuario` = $idUsuario");
+        $modificacion->execute();
+        header("Location: perfil.php");
     }
 
 }
