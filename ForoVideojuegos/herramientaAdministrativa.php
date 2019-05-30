@@ -103,6 +103,7 @@ if (isset($_SESSION['idUsuario'])) {
                 $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
                 $usuarios = $conexion->verTodosUsuarios();
                 foreach ($usuarios as $valor) {
+                    $usuarioBan = $conexion->buscarUsuarioBan($valor['idUsuario']);
                     echo "<div id='contenedorUsuario'>";
                     echo "<ul>";
                     echo "Id Usuario: " . $valor['idUsuario'];
@@ -112,8 +113,20 @@ if (isset($_SESSION['idUsuario'])) {
                     echo "Apellidos del Usuario: " . $valor['Apellidos'];
                     echo "<br/>";
                     echo "Correo Electronico: " . $valor['Correo'];
+                    echo "<br/>";
+                    if ($usuarioBan != false) {
+                        foreach ($usuarioBan as $valorBaneos) {
+                            echo "Usuario con baneo: ";
+                            echo $valorBaneos['TipoBan'];
+                            echo " <---> ";
+                            echo "Emitidio: " . $valorBaneos['Emitido'];
+                            echo " <---> ";
+                            echo "Fin del baneo: " . $valorBaneos['ExpiracionBan'];
+                            echo "<br/>";
+                        }
+                    }
                     echo "</div>";
-                    echo "<a href='formularioBaneos.php?accion=ban&idUsuario=". $valor['idUsuario'] ."&nombreUsuario=". $valor['Nombre'] ."'><button type='button'>Banear a  Usuario</button></a>";
+                    echo "<a href='formularioBaneos.php?accion=ban&idUsuario=" . $valor['idUsuario'] . "&nombreUsuario=" . $valor['Nombre'] . "'><button type='button'>Banear  Usuario</button></a>";
                     echo "</ul>";
                 }
                 $conexion->desconectar();
@@ -133,7 +146,7 @@ if (isset($_SESSION['idUsuario'])) {
                     echo "Subforos asociados: " . $cantidad . " ";
                     echo "</div>";
                     echo "<div id='botonEliminar'>";
-                    echo "<a href='model.php?accion=drop&idTema= ". $valor['id'] ."'><button>Eliminar Tema</button></a>";
+                    echo "<a href='model.php?accion=drop&idTema= " . $valor['id'] . "'><button>Eliminar Tema</button></a>";
                     echo "</div>";
                     echo "<br/>";
                 }
@@ -162,7 +175,7 @@ if (isset($_SESSION['idUsuario'])) {
                         foreach ($subforos as $valor) {
                             echo "<br>";
                             echo $valor['TituloSubForo'];
-                            echo " <a href='model.php?accion=drop&idSubforo= ". $valor['idSubforo'] ."'><button>Eliminar Subforo</button></a>";
+                            echo " <a href='model.php?accion=drop&idSubforo= " . $valor['idSubforo'] . "'><button>Eliminar Subforo</button></a>";
                         }
                         echo "</div>";
                         echo "<br>";
@@ -177,8 +190,8 @@ if (isset($_SESSION['idUsuario'])) {
                 echo "</div>";
                 echo "<div class='col-lg-10'>";
                 echo "<select name='idRelacionTema'>";
-                foreach ($temas as $valor){
-                    echo "<option value= ".$valor['id'].">".$valor['TituloTema']."</option>";
+                foreach ($temas as $valor) {
+                    echo "<option value= " . $valor['id'] . ">" . $valor['TituloTema'] . "</option>";
                 }
                 echo "</select>";
                 echo "</div>";
@@ -205,7 +218,7 @@ if (isset($_SESSION['idUsuario'])) {
                                 foreach ($posts as $valor) {
                                     echo "<br>";
                                     echo $valor['TituloPost'];
-                                    echo " <a href='model.php?accion=drop&idPost= ". $valor['idPost'] ."'><button>Eliminar Post</button></a>";
+                                    echo " <a href='model.php?accion=drop&idPost= " . $valor['idPost'] . "'><button>Eliminar Post</button></a>";
                                 }
                                 echo "</div>";
                                 echo "<br>";

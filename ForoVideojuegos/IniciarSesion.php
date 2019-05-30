@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<?php
+require_once 'config.php';
+require_once 'model.php';
+?>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -21,13 +24,38 @@
             while ($row = $result->fetch_array()) {
                 if ($row['user'] == $usuario) {
                     if (password_verify($contrasena, $row['password'])) {
-                        session_start();
-                        $_SESSION['idUsuario'] = $row['idUsuario'];
-                        $_SESSION['nombre'] = $row['nombre'];
-                        $_SESSION['apellido'] = $row['apellidos'];
-                        $_SESSION['levelUser'] = $row['levelUser'];
-                        header("Location: index.php");
-                        echo "guardo la sesion";
+                        $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+                        $busquedaUsuarioBaneado = $conexion->buscarUsuarioBan($row['idUsuario']);
+                        if ($busquedaUsuarioBaneado != false) {
+                            $localTime = new DateTime("now");
+                            $localTime = $localTime->format('Y-m-d H:i:s');
+                            foreach ($busquedaUsuarioBaneado as $valor) {
+                                $diaExpiBaneo = $valor['ExpiracionBan'];
+                            }
+                            if ($localTime > $diaExpiBaneo) {
+                                session_start();
+                                $_SESSION['idUsuario'] = $row['idUsuario'];
+                                $_SESSION['nombre'] = $row['nombre'];
+                                $_SESSION['apellido'] = $row['apellidos'];
+                                $_SESSION['levelUser'] = $row['levelUser'];
+                                header("Location: index.php");
+                            } else {
+                                echo ("<div>");
+                                echo ("Tu usuario se encuentra baneado, dia del desbaneo: ". $diaExpiBaneo);
+                                echo ("<br>");
+                                echo ("<a href='iniciarSesion.html'>Iniciar Sesion</a>");
+                                echo ("<br>");
+                                echo ("<a href='index.php'>Inicio</a>");
+                                echo ("</div>");
+                            }
+                        }else {
+                            session_start();
+                                $_SESSION['idUsuario'] = $row['idUsuario'];
+                                $_SESSION['nombre'] = $row['nombre'];
+                                $_SESSION['apellido'] = $row['apellidos'];
+                                $_SESSION['levelUser'] = $row['levelUser'];
+                                header("Location: index.php");
+                        }
                     } else if ($row['user'] == $usuario && $row['password'] != $contrasena) {
                         echo ("<div>");
                         echo ("La contrasena en incorrecta, porfavor vuelve a escribirla");

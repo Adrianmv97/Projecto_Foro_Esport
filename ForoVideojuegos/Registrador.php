@@ -22,14 +22,13 @@ and open the template in the editor.
 
             $nombreUsuario = $_REQUEST["nombreUsuario"];
             $apellidoUsuario = $_REQUEST["apellidoUsuario"];
-            $CorreoUsuario = $_REQUEST["correo"];
 
             $conn = mysqli_connect('localhost', 'root', '', 'foroesport', '3306');
             if (!$conn) {
                 die('Could not connect to MySQL: ' . mysqli_connect_error());
             }
-            $accion = "INSERT INTO `usuarios` (`USER`, `PASSWORD`, `CORREO`, `NOMBRE`, `APELLIDOS`, `LEVELUSER`)"
-                    . " VALUES ('$newUser', '$passwordEncrypted' , '$CorreoUsuario' , '$nombreUsuario' , '$apellidoUsuario' , 1)";
+            $accion = "INSERT INTO `usuarios` (`USER`, `PASSWORD`,  `NOMBRE`, `APELLIDOS`, `LEVELUSER`)"
+                    . " VALUES ('$newUser', '$passwordEncrypted' , '$nombreUsuario' , '$apellidoUsuario' , 1)";
 
             $accion2 = "SELECT user FROM usuarios WHERE user = '$newUser'";
 
