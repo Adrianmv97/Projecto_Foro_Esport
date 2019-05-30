@@ -34,7 +34,7 @@ session_start();
                     echo "<ul class = 'navbar-nav'>";
                     echo "<div class = 'p-2 border bg-success'>";
                     echo "<li class = 'nav-item active'>";
-                    echo "<a class = 'nav-link' href = ''>Datos de Usuario(Proximamente)</a>";
+                    echo "<a class='nav-link' href='perfil.php'>Datos de Usuario</a>";
                     echo "</li>";
                     echo "</div>";
                     echo "</ul>";
