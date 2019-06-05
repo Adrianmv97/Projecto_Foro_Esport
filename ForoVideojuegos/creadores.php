@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (!isset( $_SESSION['idUsuario'])){
+    header("Location: accessDenied.php");
+}
 ?>
 <html>
 <head>
@@ -17,9 +20,6 @@ session_start();
 <body>
 <nav class="navbar navbar-light bg-primary">
     <div class="collapse navbar-collapse d-flex flex-row bd-highlight" id="navbarText" id="datos">
-        <span class="navbar-text">
-            Datos de usuario
-        </span>
     </div>
     <div class="collapse navbar-collapse d-flex flex-row-reverse bd-highlight" id="navbarSupportedContent">
         <?php
@@ -34,7 +34,7 @@ session_start();
                     echo "<ul class = 'navbar-nav'>";
                     echo "<div class = 'p-2 border bg-success'>";
                     echo "<li class = 'nav-item active'>";
-                    echo "<a class = 'nav-link' href = ''>Datos de Usuario(Proximamente)</a>";
+                    echo "<a class = 'nav-link' href = 'perfil.php'>Datos de Usuario</a>";
                     echo "</li>";
                     echo "</div>";
                     echo "</ul>";
@@ -66,13 +66,12 @@ session_start();
             Creadores
         </div>
         <div class="card-body">
-            <p class="card-text">Datos de los creadores</p>
+            <p class="card-text">Adrian Muñoz Valle</p>
             <br>
-            <p class="card-text">Datos de los creadores</p>
+            <p class="card-text">Ramon Botella Ciria</p>
             <br>
-            <p class="card-text">Datos de los creadores</p>
+            <p class="card-text">victor Gomez-Calcerrada San Juan</p>
             <br>
-            <p class="card-text">Datos de los creadores</p>
         </div>
     </div>
 </div>

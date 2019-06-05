@@ -1,4 +1,5 @@
 <?php
+
 require_once 'config.php';
 
 if (isset($_REQUEST["idPost"])) {
@@ -15,7 +16,7 @@ if (isset($_REQUEST["comentario"])) {
         $idUsuario = $_SESSION["idUsuario"];
         $nombreUsuario = $_SESSION['nombre'];
         $apellidoUsuario = $_SESSION['apellido'];
-        
+
 
         $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
         $comentario = $conexion->escrituraComentario($idPost, $TituloPost, $comentario, $idUsuario, $nombreUsuario, $apellidoUsuario);
@@ -34,7 +35,7 @@ if (isset($_REQUEST["contenidoPost"])) {
     $apellidoUsuario = $_SESSION['apellido'];
 
     $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
-    $comentario = $conexion->crearPost($idSubForo,$contenidoPost,$idUsuario,$nombreUsuario,$apellidoUsuario,$TituloPost,$TituloSubForo);
+    $comentario = $conexion->crearPost($idSubForo, $contenidoPost, $idUsuario, $nombreUsuario, $apellidoUsuario, $TituloPost, $TituloSubForo);
 }
 
 if (isset($_REQUEST["TituloTema"])) {
@@ -46,9 +47,42 @@ if (isset($_REQUEST["TituloTema"])) {
 if (isset($_REQUEST["TituloNuevoSubForo"])) {
     $TituloNuevoSubForo = $_REQUEST["TituloNuevoSubForo"];
     $idRelacionTema = $_REQUEST["idRelacionTema"];
-    
+
     $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
-    $comentario = $conexion->crearSubForo($TituloNuevoSubForo,$idRelacionTema);
+    $comentario = $conexion->crearSubForo($TituloNuevoSubForo, $idRelacionTema);
+}
+
+if (isset($_REQUEST["accion"])) {
+    $accion = $_REQUEST["accion"];
+
+    if ($accion == "drop") {
+        $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+        if (isset($_REQUEST['idPost'])) {
+            $conexion->dropPost($_REQUEST['idPost']);
+        } else if (isset($_REQUEST['idSubforo'])) {
+            $conexion->dropSubForo($_REQUEST['idSubforo']);
+        } else if (isset($_REQUEST['idTema'])) {
+            $conexion->dropTema($_REQUEST['idTema']);
+        }
+    }
+
+    if ($accion == "ban") {
+        $idUsuario = $_REQUEST['idUsuario'];
+        $nombreUsuario = $_REQUEST['nombreUsuario'];
+        $tipoBaneo = $_REQUEST['tipoBaneo'];
+        $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+        $conexion->banUsuario($idUsuario, $nombreUsuario, $tipoBaneo);
+    }
+    if ($accion == "modDatosUsuario") {
+        $idUsuario = $_REQUEST['idUsuario'];
+        $nombreUsuario = $_REQUEST['cambiarNombre'];
+        $apellidoUsuario = $_REQUEST['cambiarApellidos'];
+        $correoUsuario = $_REQUEST['cambiarCorreo'];
+        
+        $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+        $conexion->modDatosUsuarios($idUsuario,$nombreUsuario,$apellidoUsuario,$correoUsuario);
+    }
+    
 }
 
 class model {
@@ -176,8 +210,8 @@ class model {
     public function desconectar() {
         $this->conexion->close();
     }
-    
-    public function crearPost($idSubForo,$contenidoPost,$idUsuario,$nombreUsuario,$apellidoUsuario,$TituloPost) {
+
+    public function crearPost($idSubForo, $contenidoPost, $idUsuario, $nombreUsuario, $apellidoUsuario, $TituloPost) {
 
         $insercion = $this->conexion->stmt_init();
 
@@ -186,7 +220,7 @@ class model {
         $insercion->execute();
         header("Location: foro.php");
     }
-    
+
     public function crearTema($TituloTema) {
 
         $insercion = $this->conexion->stmt_init();
@@ -196,8 +230,8 @@ class model {
         $insercion->execute();
         header("Location: herramientaAdministrativa.php");
     }
-    
-    public function crearSubForo($TituloNuevoSubForo,$idRelacionTema) {
+
+    public function crearSubForo($TituloNuevoSubForo, $idRelacionTema) {
 
         $insercion = $this->conexion->stmt_init();
 
@@ -207,5 +241,96 @@ class model {
         header("Location: herramientaAdministrativa.php");
     }
 
+    public function dropTema($idTema) {
+        $drop = $this->conexion->stmt_init();
+        $drop->prepare("DELETE FROM `temas` WHERE `temas`.`idTema` = $idTema");
+        $drop->execute();
+        header("Location: herramientaAdministrativa.php");
+    }
+
+    public function dropSubForo($idSubforo) {
+        $drop = $this->conexion->stmt_init();
+        $drop->prepare("DELETE FROM `subforo` WHERE `subforo`.`idSubforo` = $idSubforo");
+        $drop->execute();
+        header("Location: herramientaAdministrativa.php");
+    }
+
+    public function dropPost($idPost) {
+        $drop = $this->conexion->stmt_init();
+        $drop->prepare("DELETE FROM `post` WHERE `post`.`idPost` = $idPost");
+        $drop->execute();
+        header("Location: herramientaAdministrativa.php");
+    }
+
+    public function banUsuario($idUsuario, $nombreUsuario, $tipoBaneo) {
+
+        $localTime = new DateTime("now");
+        if ($tipoBaneo == 1) {
+            $infobaneo = "1 dia";
+            $tiempoBaneo = "+1 day";
+        } else if ($tipoBaneo == 2) {
+            $infobaneo = "2 dias";
+            $tiempoBaneo = "+2 day";
+        } else if ($tipoBaneo == 3) {
+            $infobaneo = "1 semana";
+            $tiempoBaneo = "+7 day";
+        } else if ($tipoBaneo == 4) {
+            $infobaneo = "1 mes";
+            $tiempoBaneo = "+1 month";
+        } else if ($tipoBaneo == 5) {
+            $infobaneo = "Vacaciones de larga estancia";
+            $tiempoBaneo = "9999-12-31 23:59:59";
+        }
+        $emitido = $localTime->format('Y-m-d H:i:s');
+        $localTime->modify($tiempoBaneo);
+        $tiempoBaneado = $localTime->format('Y-m-d H:i:s');
+
+        $baneo = $this->conexion->stmt_init();
+        $baneo->prepare("INSERT INTO `baneos` (`id`, `idUsuario`, `TipoBan`, `ExpiracionBan`, `Emitido`)"
+                . "VALUES (NULL, $idUsuario, '$infobaneo', '$tiempoBaneado', '$emitido')");
+        $baneo->execute();
+        header("Location: herramientaAdministrativa.php");
+    }
+
+    public function buscarUsuarioBan($idUsuario) {
+        $resultado = array();
+        $buscar = $this->conexion->stmt_init();
+        $buscar->prepare("SELECT idUsuario,TipoBan,Emitido,ExpiracionBan FROM baneos WHERE idUsuario = $idUsuario");
+        $buscar->execute();
+
+        $buscar->store_result();
+        $localizado = $buscar->num_rows();
+        $buscar->bind_result($idUsuario, $TipoBan, $Emitido, $ExpiracionBan);
+        if ($localizado == 0) {
+            return false;
+        } else if ($localizado > 0) {        
+            while ($fila = $buscar->fetch()) {
+                $arrayFila = array("idUsuario" => $idUsuario, "TipoBan" => $TipoBan, "Emitido" => $Emitido, "ExpiracionBan" => $ExpiracionBan);
+                array_push($resultado, $arrayFila);
+            }
+            return $resultado;
+        }
+    }
+    
+    public function verDatosUsuario($idUsuario) {
+        $resultado = array();
+        $consulta = $this->conexion->stmt_init();
+        $consulta->prepare("SELECT idUsuario,Correo,Nombre,Apellidos,LevelUser FROM usuarios WHERE idUsuario = $idUsuario");
+        $consulta->execute();
+        $consulta->bind_result($idUsuario, $correo, $nombre, $apellidos, $levelUser);
+        while ($fila = $consulta->fetch()) {
+            $arrayFila = array("idUsuario" => $idUsuario, "Nombre" => $nombre, "Apellidos" => $apellidos, "LevelUser" => $levelUser, "Correo" => $correo);
+            array_push($resultado, $arrayFila);
+        }
+        return $resultado;
+    }
+    
+    public function modDatosUsuarios($idUsuario,$nombreUsuario,$apellidoUsuario,$correoUsuario) {
+        $modificacion = $this->conexion->stmt_init();
+        $modificacion->prepare("UPDATE `usuarios` SET `Correo` = '$correoUsuario', `Nombre` = '$nombreUsuario', `Apellidos` = '$apellidoUsuario'"
+                . " WHERE `usuarios`.`idUsuario` = $idUsuario");
+        $modificacion->execute();
+        header("Location: perfil.php");
+    }
 
 }

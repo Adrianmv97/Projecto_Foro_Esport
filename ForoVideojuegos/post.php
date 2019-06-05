@@ -10,6 +10,9 @@ if (isset($_REQUEST["accion"])) {
 if (isset($_REQUEST["idPost"])) {
     $idPost = $_REQUEST["idPost"];
 }
+if (!isset( $_SESSION['idUsuario'])){
+    header("Location: accessDenied.php");
+}
 ?>
 <html>
     <head>
@@ -27,9 +30,6 @@ if (isset($_REQUEST["idPost"])) {
     <body>
         <nav class="navbar navbar-light bg-primary">
             <div class="collapse navbar-collapse d-flex flex-row bd-highlight" id="navbarText" id="datos">
-                <span class="navbar-text">
-                    Datos de usuario
-                </span>
             </div>
             <div class="collapse navbar-collapse d-flex flex-row-reverse bd-highlight" id="navbarSupportedContent">
                 <?php
@@ -44,7 +44,7 @@ if (isset($_REQUEST["idPost"])) {
                     echo "<ul class = 'navbar-nav'>";
                     echo "<div class = 'p-2 border bg-success'>";
                     echo "<li class = 'nav-item active'>";
-                    echo "<a class = 'nav-link' href = ''>Datos de Usuario(Proximamente)</a>";
+                    echo "<a class = 'nav-link' href = 'perfil.php'>Datos de Usuario</a>";
                     echo "</li>";
                     echo "</div>";
                     echo "</ul>";

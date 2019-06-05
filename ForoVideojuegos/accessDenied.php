@@ -20,22 +20,7 @@ session_start();
             </div>
             <div class="collapse navbar-collapse d-flex flex-row-reverse bd-highlight" id="navbarSupportedContent">
                 <?php
-                if (isset($_SESSION['idUsuario'])) {
-                    echo "<ul class = 'navbar-nav'>";
-                    echo "<div class = 'p-2 border bg-success'>";
-                    echo "<li class = 'nav-item active'>";
-                    echo "<a class = 'nav-link' href = 'desconectar.php'>Cerrar Sesion</a>";
-                    echo "</li>";
-                    echo "</div>";
-                    echo "</ul>";
-                    echo "<ul class = 'navbar-nav'>";
-                    echo "<div class = 'p-2 border bg-success'>";
-                    echo "<li class = 'nav-item active'>";
-                    echo "<a class = 'nav-link' href = 'perfil.php'>Datos de Usuario</a>";
-                    echo "</li>";
-                    echo "</div>";
-                    echo "</ul>";
-                }else {
+                
                     echo "<ul class = 'navbar-nav'>";
                     echo "<div class = 'p-2 border bg-success'>";
                     echo "<li class = 'nav-item active'>";
@@ -50,16 +35,12 @@ session_start();
                     echo "</li>";
                     echo "</div>";
                     echo "</ul>";
-                }
+                
                 ?>
             </div>
         </nav>
         <?php
-        include('./templates/nav.php');
-        include('./templates/ficha.php');
-        ?>
-        <?php
-        include('./templates/footer.php');
+        include('./templates/denied.php');
         ?>
     </body>
 </html>
