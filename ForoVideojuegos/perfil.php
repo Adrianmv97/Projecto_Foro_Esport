@@ -14,8 +14,6 @@ session_start();
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <style>
-            body {
-            }
             #logo {
                 text-align: center;
             }
@@ -28,6 +26,9 @@ session_start();
                 padding: 10px;
                 background: #111111;
                 color: #999999;
+            }
+            a {
+                margin-left: 72%;
             }
         </style>
     </head>
@@ -52,6 +53,7 @@ session_start();
                     echo "<input type='email' class='form-control' id='email' name='cambiarCorreo' value='". $valor['Correo'] ."'/>";
                     echo "<br/>";
                     echo "<button type='submit' class='btn btn-primary'>Guardar Cambios</button>";
+                    echo "<a class='btn btn-primary' href='seleccionarAvatar.php'>Elegir foto de perfil</a>";
                     echo "<input type='hidden' name='idUsuario' value='". $_SESSION['idUsuario'] ."'>";
                 }
                 ?>

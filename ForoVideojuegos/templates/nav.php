@@ -3,6 +3,7 @@
         <a class="navbar-brand" href="index.php">
             <img src="imagenes/LogoEsport.jpg" width="150" height="150" alt="logo del foro">
         </a>
+        <h1>8-Bit Arena</h1>
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
