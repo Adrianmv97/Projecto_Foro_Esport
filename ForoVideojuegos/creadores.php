@@ -81,7 +81,7 @@ if (!isset( $_SESSION['idUsuario'])){
             <br>
             <p class="card-text">Ramon Botella Ciria <img src='imagenes/premium.jpg' height='70px' width='60px'></p>
             <br>
-            <p class="card-text">victor Gomez-Calcerrada San Juan <img src='imagenes/premium.jpg' height='70px' width='60px'></p>
+            <p class="card-text">Victor Gomez-Calcerrada San Juan <img src='imagenes/premium.jpg' height='70px' width='60px'></p>
             <br>
         </div>
     </div>
