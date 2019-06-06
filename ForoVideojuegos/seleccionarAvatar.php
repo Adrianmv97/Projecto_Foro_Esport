@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+<?php
+require_once 'config.php';
+require_once 'model.php';
+session_start();
+
+
+if (!isset($_SESSION['idUsuario'])) {
+    header("Location: index.php");
+}
+?>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -20,17 +29,21 @@
 </head>
 <body>
     <div id="logo">
-        <a href="index.php"><img src="imagenes/LogoEsport.jpg" width="150" height="150" alt="logo del foro"/></a>
+        <a href="index.php"><img src="imagenes/LogoEsport.png" width="150" height="150" alt="logo del foro"/></a>
     </div>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">Elige tu foto o imagen de perfil</h1>
             <?php
-            for($i = 0; $i <= 53; $i++) {
-                echo "<img src='imagenes/default-profile.png' height='50px' width='40px'>";
+            $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+            $imagenes = $conexion->verImagenes();
+            foreach ($imagenes as $imagen){
+                echo "  <a href='model.php?accion=cambiarImagen&idImagen=" . $imagen['id'] . "&idUsuario=". $_SESSION['idUsuario'] ."' class='btn btn-primary'>"
+                        . "<img src='". $imagen['ubicacion'] ."' height='80px' width='70px'></a>  ";
             }
+                
+            
             ?>
-            <button type="button" class="btn btn-success">Guardar Foto de Perfil</button>
         </div>
     </div>    
 </body>

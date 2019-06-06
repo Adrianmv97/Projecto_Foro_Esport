@@ -30,7 +30,7 @@ if (isset($_REQUEST['accion'])){
 </head>
 <body>
     <div id="logo">
-        <a href="index.php"><img src="imagenes/LogoEsport.jpg" width="150" height="150" alt="logo del foro"/></a>
+        <a href="index.php"><img src="imagenes/LogoEsport.png" width="150" height="150" alt="logo del foro"/></a>
     </div>
     <h1>¿A QUIEN VAS A BANEAR?</h1>
     <form action="model.php" method="POST">

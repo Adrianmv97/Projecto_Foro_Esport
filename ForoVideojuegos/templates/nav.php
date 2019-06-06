@@ -1,7 +1,7 @@
 <nav class="navbar-expand-lg navbar-light bg-light">
     <div class="col px-md-5">
         <a class="navbar-brand" href="index.php">
-            <img src="imagenes/LogoEsport.jpg" width="150" height="150" alt="logo del foro">
+            <img src="imagenes/LogoEsport.png" width="150" height="150" alt="logo del foro">
         </a>
         <h1>8-Bit Arena</h1>
     </div>

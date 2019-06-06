@@ -34,7 +34,7 @@ session_start();
     </head>
     <body>
         <div id="logo">
-            <a href="index.php"><img src="imagenes/LogoEsport.jpg" width="150" height="150" alt="logo del foro"/></a>
+            <a href="index.php"><img src="imagenes/LogoEsport.png" width="150" height="150" alt="logo del foro"/></a>
         </div>
         <div class="container">
             <h2>Perfil de Usuario</h2>

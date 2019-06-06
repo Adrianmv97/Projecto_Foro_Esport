@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once 'config.php';
+require_once 'model.php';
 ?>
 <html>
     <head>
@@ -21,6 +23,8 @@ session_start();
             <div class="collapse navbar-collapse d-flex flex-row-reverse bd-highlight" id="navbarSupportedContent">
                 <?php
                 if (isset($_SESSION['idUsuario'])) {
+                    $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+                    $datosUsuario = $conexion->verDatosUsuario($_SESSION['idUsuario']);
                     echo "<ul class = 'navbar-nav'>";
                     echo "<div class = 'p-2 border bg-success'>";
                     echo "<li class = 'nav-item active'>";
@@ -31,11 +35,17 @@ session_start();
                     echo "<ul class = 'navbar-nav'>";
                     echo "<div class = 'p-2 border bg-success'>";
                     echo "<li class = 'nav-item active'>";
-                    echo "<a class = 'nav-link' href = 'perfil.php'>Datos de Usuario</a>";
+                    foreach ($datosUsuario as $valor) {
+                        $fotoUsuario = $conexion->sacarImagenUsuario($valor['idfotoPerfil']);
+                        foreach ($fotoUsuario as $foto) {
+                            echo "<a class = 'nav-link' href = 'perfil.php'><img src='". $foto['ubicacion'] ."' height='70px' width='60px'></a>";
+                        }
+                    }
                     echo "</li>";
                     echo "</div>";
                     echo "</ul>";
-                }else {
+                    $conexion->desconectar();
+                } else {
                     echo "<ul class = 'navbar-nav'>";
                     echo "<div class = 'p-2 border bg-success'>";
                     echo "<li class = 'nav-item active'>";
