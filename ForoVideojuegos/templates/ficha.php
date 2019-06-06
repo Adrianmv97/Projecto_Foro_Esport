@@ -18,6 +18,9 @@ require_once 'model.php';
 
             echo "<div class='card-body'>";
             echo "<h5 class='card-title'>". $valor['TituloTema']."</h5>";
+            echo "<img src='https://e00-marca.uecdn.es/assets/multimedia/imagenes/2019/05/13/15577743771579.jpg' class='card-img-top' alt='tema' height='250' width='120'>";
+            echo "<br/>";
+            echo "<br/>";
             echo "<a href='Foro.php?accion=ver&idTemaUnico=". $valor['id'] ."' class='btn btn-primary'>Ver Tema</a>";
             echo "</div>";
 
