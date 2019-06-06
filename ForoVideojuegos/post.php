@@ -10,7 +10,7 @@ if (isset($_REQUEST["accion"])) {
 if (isset($_REQUEST["idPost"])) {
     $idPost = $_REQUEST["idPost"];
 }
-if (!isset( $_SESSION['idUsuario'])){
+if (!isset($_SESSION['idUsuario'])) {
     header("Location: accessDenied.php");
 }
 ?>
@@ -34,6 +34,8 @@ if (!isset( $_SESSION['idUsuario'])){
             <div class="collapse navbar-collapse d-flex flex-row-reverse bd-highlight" id="navbarSupportedContent">
                 <?php
                 if (isset($_SESSION['idUsuario'])) {
+                    $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+                    $datosUsuario = $conexion->verDatosUsuario($_SESSION['idUsuario']);
                     echo "<ul class = 'navbar-nav'>";
                     echo "<div class = 'p-2 border bg-success'>";
                     echo "<li class = 'nav-item active'>";
@@ -44,11 +46,17 @@ if (!isset( $_SESSION['idUsuario'])){
                     echo "<ul class = 'navbar-nav'>";
                     echo "<div class = 'p-2 border bg-success'>";
                     echo "<li class = 'nav-item active'>";
-                    echo "<a class = 'nav-link' href = 'perfil.php'>Datos de Usuario</a>";
+                    foreach ($datosUsuario as $valor) {
+                        $fotoUsuario = $conexion->sacarImagenUsuario($valor['idfotoPerfil']);
+                        foreach ($fotoUsuario as $foto) {
+                            echo "<a class = 'nav-link' href = 'perfil.php'><img src='" . $foto['ubicacion'] . "' height='70px' width='60px'></a>";
+                        }
+                    }
                     echo "</li>";
                     echo "</div>";
                     echo "</ul>";
-                }else {
+                    $conexion->desconectar();
+                } else {
                     echo "<ul class = 'navbar-nav'>";
                     echo "<div class = 'p-2 border bg-success'>";
                     echo "<li class = 'nav-item active'>";
@@ -76,6 +84,7 @@ if (!isset( $_SESSION['idUsuario'])){
             $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
             $post = $conexion->verPost($idPost);
             foreach ($post as $valor) {
+                $datosUsuario = $conexion->verDatosUsuario($valor['idUsuarioRelacion']);
                 $TituloPost = $valor['TituloPost'];
                 echo "<div class='card'>";
                 echo "<div class='card-header'>";
@@ -83,7 +92,13 @@ if (!isset( $_SESSION['idUsuario'])){
                 echo "</div>";
                 echo "<div class='card-body'>";
                 echo "<p class='card-text'>";
-                echo "Creador del post: " . $valor['NombreUsuario'] . " " . $valor['ApellidoUsuario'];
+                foreach ($datosUsuario as $usuario) {
+                    $fotoUsuario = $conexion->sacarImagenUsuario($usuario['idfotoPerfil']);
+                    foreach ($fotoUsuario as $foto) {
+                        echo "Creador del post: " . $usuario['Nombre'] . " " . $usuario['Apellidos'] ."<img src='" . $foto['ubicacion'] . "' height='70px' width='60px'>";
+                    }
+                }
+
                 echo "</p>";
                 echo"<p class='card-text'>";
                 echo $valor['ContenidoPost'];
@@ -100,9 +115,15 @@ if (!isset( $_SESSION['idUsuario'])){
 
             echo "<label for='inputPassword' class='col-lg-2 control-label'>Comentarios</label>";
             foreach ($comentarios as $valor) {
+                $datosUsuario = $conexion->verDatosUsuario($valor['idUsuarioRelacion']);
                 echo "<div class='card'>";
                 echo "<div class='card-header'>";
-                echo $valor['NombreUsuario'] . " " . $valor['ApellidoUsuario'];
+                foreach ($datosUsuario as $usuario) {
+                    $fotoUsuario = $conexion->sacarImagenUsuario($usuario['idfotoPerfil']);
+                    foreach ($fotoUsuario as $foto) {
+                        echo  $usuario['Nombre'] . " " . $usuario['Apellidos'] ."  <img src='" . $foto['ubicacion'] . "' height='70px' width='60px'>";
+                    }
+                }
                 echo "</div>";
                 echo "<div class='card-body'>";
                 echo "<p class='card-text'>";

@@ -27,8 +27,8 @@ and open the template in the editor.
             if (!$conn) {
                 die('Could not connect to MySQL: ' . mysqli_connect_error());
             }
-            $accion = "INSERT INTO `usuarios` (`USER`, `PASSWORD`,  `NOMBRE`, `APELLIDOS`, `LEVELUSER`)"
-                    . " VALUES ('$newUser', '$passwordEncrypted' , '$nombreUsuario' , '$apellidoUsuario' , 1)";
+            $accion = "INSERT INTO `usuarios` (`USER`, `PASSWORD`,  `NOMBRE`, `APELLIDOS`, `LEVELUSER`, `idfotoPerfil`)"
+                    . " VALUES ('$newUser', '$passwordEncrypted' , '$nombreUsuario' , '$apellidoUsuario' , 1 , 1)";
 
             $accion2 = "SELECT user FROM usuarios WHERE user = '$newUser'";
 

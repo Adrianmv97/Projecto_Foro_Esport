@@ -83,6 +83,14 @@ if (isset($_REQUEST["accion"])) {
         $conexion->modDatosUsuarios($idUsuario,$nombreUsuario,$apellidoUsuario,$correoUsuario);
     }
     
+    if ($accion == "cambiarImagen") {
+        $idUsuario = $_REQUEST['idUsuario'];
+        $idImagen = $_REQUEST['idImagen'];
+        
+        $conexion = new model(Config::$host, Config::$user, Config::$pass, Config::$baseDatos);
+        $conexion->cambiarImagenUsuario($idImagen,$idUsuario);
+    }
+    
 }
 
 class model {
@@ -98,9 +106,9 @@ class model {
         $consulta = $this->conexion->stmt_init();
         $consulta->prepare("SELECT * FROM Temas");
         $consulta->execute();
-        $consulta->bind_result($id, $tituloTema);
+        $consulta->bind_result($id, $tituloTema, $idImagen);
         while ($fila = $consulta->fetch()) {
-            $arrayFila = array("id" => $id, "TituloTema" => $tituloTema);
+            $arrayFila = array("id" => $id, "TituloTema" => $tituloTema , "idImagen" => $idImagen);
             array_push($resultado, $arrayFila);
         }
         return $resultado;
@@ -138,7 +146,7 @@ class model {
         $consulta = $this->conexion->stmt_init();
         $consulta->prepare("SELECT * FROM comentario WHERE idPostRelacion = " . $idPost);
         $consulta->execute();
-        $consulta->bind_result($idComentario, $comentario, $idUsuarioRelacion, $idPostRelacion, $nombreUsuario, $apellidoUsuario);
+        $consulta->bind_result($idComentario, $comentario, $idPostRelacion, $idUsuarioRelacion, $nombreUsuario, $apellidoUsuario);
         while ($fila = $consulta->fetch()) {
             $arrayFila = array("idComentario" => $idComentario, "Comentario" => $comentario, "idUsuarioRelacion" => $idUsuarioRelacion
                 , "idPostRelacion" => $idPostRelacion, "NombreUsuario" => $nombreUsuario, "ApellidoUsuario" => $apellidoUsuario);
@@ -197,7 +205,7 @@ class model {
     public function verTema($idTema) {
         $resultado = array();
         $consulta = $this->conexion->stmt_init();
-        $consulta->prepare("SELECT * FROM Temas WHERE idTema = " . $idTema);
+        $consulta->prepare("SELECT idTema,nombreTema FROM Temas WHERE idTema = " . $idTema);
         $consulta->execute();
         $consulta->bind_result($id, $tituloTema);
         while ($fila = $consulta->fetch()) {
@@ -225,8 +233,8 @@ class model {
 
         $insercion = $this->conexion->stmt_init();
 
-        $insercion->prepare("INSERT INTO `temas` (`nombreTema`)"
-                . " VALUES ('$TituloTema')");
+        $insercion->prepare("INSERT INTO `temas` (`nombreTema` , `idImagen`)"
+                . " VALUES ('$TituloTema', 1)");
         $insercion->execute();
         header("Location: herramientaAdministrativa.php");
     }
@@ -315,11 +323,12 @@ class model {
     public function verDatosUsuario($idUsuario) {
         $resultado = array();
         $consulta = $this->conexion->stmt_init();
-        $consulta->prepare("SELECT idUsuario,Correo,Nombre,Apellidos,LevelUser FROM usuarios WHERE idUsuario = $idUsuario");
+        $consulta->prepare("SELECT idUsuario,Correo,Nombre,Apellidos,LevelUser,idfotoPerfil FROM usuarios WHERE idUsuario = $idUsuario");
         $consulta->execute();
-        $consulta->bind_result($idUsuario, $correo, $nombre, $apellidos, $levelUser);
+        $consulta->bind_result($idUsuario, $correo, $nombre, $apellidos, $levelUser, $idfotoPerfil);
         while ($fila = $consulta->fetch()) {
-            $arrayFila = array("idUsuario" => $idUsuario, "Nombre" => $nombre, "Apellidos" => $apellidos, "LevelUser" => $levelUser, "Correo" => $correo);
+            $arrayFila = array("idUsuario" => $idUsuario, "Nombre" => $nombre, "Apellidos" => $apellidos,
+                "LevelUser" => $levelUser, "Correo" => $correo , "idfotoPerfil" => $idfotoPerfil);
             array_push($resultado, $arrayFila);
         }
         return $resultado;
@@ -332,5 +341,47 @@ class model {
         $modificacion->execute();
         header("Location: perfil.php");
     }
-
+    
+    public function sacarImagenTema ($idImagen){
+        $resultado = array();
+        $consulta = $this->conexion->stmt_init();
+        $consulta->prepare("SELECT ubicacion FROM imagenestemas WHERE id = $idImagen");
+        $consulta->execute();
+        $consulta->bind_result($ubicacion);
+        while ($fila = $consulta->fetch()) {
+            $arrayFila = array("ubicacion" => $ubicacion);
+            array_push($resultado, $arrayFila);
+        }
+        return $resultado;
+    }
+    public function sacarImagenUsuario ($idFotoPerfil){
+        $resultado = array();
+        $consulta = $this->conexion->stmt_init();
+        $consulta->prepare("SELECT Ubicacion FROM fotoperfil WHERE id = $idFotoPerfil");
+        $consulta->execute();
+        $consulta->bind_result($ubicacion);
+        while ($fila = $consulta->fetch()) {
+            $arrayFila = array("ubicacion" => $ubicacion);
+            array_push($resultado, $arrayFila);
+        }
+        return $resultado;
+    }
+    public function cambiarImagenUsuario ($idFotoPerfil, $idUsuario){
+        $modificacion = $this->conexion->stmt_init();
+        $modificacion->prepare("UPDATE `usuarios` SET `idfotoPerfil` = '$idFotoPerfil' WHERE `usuarios`.`idUsuario` = $idUsuario");
+        $modificacion->execute();
+        header("Location: index.php");
+    }
+    public function verImagenes (){
+        $resultado = array();
+        $consulta = $this->conexion->stmt_init();
+        $consulta->prepare("SELECT * FROM fotoperfil");
+        $consulta->execute();
+        $consulta->bind_result($id,$ubicacion);
+        while ($fila = $consulta->fetch()) {
+            $arrayFila = array("id" => $id ,"ubicacion" => $ubicacion);
+            array_push($resultado, $arrayFila);
+        }
+        return $resultado;
+    }
 }
